@@ -1,0 +1,265 @@
+<!-- VioNest - NYU Duo Verification -->
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>NYU SSO - Duo Push Confirmation</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#e5e2e1",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-secondary-fixed-variant": "#474746",
+                        "inverse-primary": "#e0b6ff",
+                        "tertiary-fixed-dim": "#f8ba7f",
+                        "on-error-container": "#93000a",
+                        "outline": "#7e7383",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3132",
+                        "on-primary-container": "#c985ff",
+                        "on-surface-variant": "#4c4451",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#562f00",
+                        "surface-container-highest": "#e1e3e4",
+                        "secondary-container": "#e2dfde",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "primary-container": "#57068c",
+                        "on-secondary-container": "#636262",
+                        "on-tertiary-fixed": "#2d1600",
+                        "tertiary": "#381c00",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "on-error": "#ffffff",
+                        "background": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#d0965f",
+                        "surface-variant": "#e1e3e4",
+                        "on-surface": "#191c1d",
+                        "surface-container-low": "#f3f4f5",
+                        "surface": "#f8f9fa",
+                        "surface-dim": "#d9dadb",
+                        "on-primary": "#ffffff",
+                        "primary": "#39005f",
+                        "outline-variant": "#cfc2d3",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-fixed": "#ffdcbf",
+                        "surface-container-high": "#e7e8e9",
+                        "on-background": "#191c1d",
+                        "surface-tint": "#803db5",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-primary-fixed-variant": "#66209b",
+                        "primary-fixed": "#f2daff",
+                        "on-primary-fixed": "#2e004e",
+                        "on-tertiary-fixed-variant": "#673d0c",
+                        "secondary": "#5f5e5e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-lg": "2rem",
+                        "container-max": "1280px",
+                        "stack-md": "1rem",
+                        "margin-desktop": "2rem",
+                        "margin-mobile": "1rem",
+                        "stack-sm": "0.5rem",
+                        "gutter": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-price": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-price": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .watermark-pattern {
+            background-image: repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(255, 255, 255, 0.03) 40px,
+                    rgba(255, 255, 255, 0.03) 80px);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from {
+                box-shadow: 0 0 0 0 rgba(87, 6, 140, 0.2);
+            }
+
+            to {
+                box-shadow: 0 0 0 10px rgba(87, 6, 140, 0);
+            }
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-primary-container min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-margin-mobile md:px-margin-desktop font-body-lg text-body-lg text-on-surface">
+    <!-- Background Watermark -->
+    <div class="absolute inset-0 watermark-pattern pointer-events-none z-0"></div>
+    <!-- Main Authentication Card -->
+    <main
+        class="bg-surface-container-lowest w-full max-w-[420px] rounded-xl border border-secondary-container shadow-sm relative z-10 flex flex-col pt-stack-lg pb-stack-lg px-stack-lg md:px-8">
+        <!-- Header / Logo -->
+        <header class="flex items-center gap-2 mb-stack-lg w-full">
+            <span class="material-symbols-outlined text-primary-container text-[28px]"
+                style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+            <span class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">NYU</span>
+            <div class="h-6 w-px bg-outline-variant mx-1"></div>
+            <span class="font-label-caps text-label-caps text-on-surface-variant">SSO Login</span>
+        </header>
+        <!-- Content Area -->
+        <div class="flex flex-col items-center text-center">
+            <h1 class="font-headline-md text-headline-md text-on-surface mb-stack-sm w-full">Duo Push Confirmation</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant mb-1 w-full max-w-[300px]">
+                Approve the notification to verify your identity.
+            </p>
+            <p class="font-label-sm text-label-sm text-secondary mb-stack-lg w-full">
+                Sent to 'iOS' (••-••-••••-5937)
+            </p>
+            <!-- Illustration & Animation State Container -->
+            <div class="flex flex-col items-center w-full min-h-[220px]" id="auth-state-container">
+                <!-- Waiting State -->
+                <div class="flex flex-col items-center w-full transition-opacity duration-300" id="state-waiting">
+                    <!-- Phone Illustration -->
+                    <div
+                        class="relative w-20 h-40 border-4 border-outline rounded-xl mb-stack-md flex flex-col items-center pt-3 px-1 bg-surface-container-lowest overflow-hidden shadow-sm pulse-glow">
+                        <!-- Camera Notch -->
+                        <div class="w-8 h-1 bg-outline rounded-full mb-3"></div>
+                        <!-- Notification Bubble -->
+                        <div
+                            class="w-full bg-surface-container-high rounded p-1.5 flex items-start gap-1 border border-outline-variant shadow-sm relative z-10">
+                            <div class="bg-primary-container rounded-sm p-0.5 mt-0.5 flex-shrink-0">
+                                <span class="material-symbols-outlined text-on-primary text-[10px]"
+                                    style="font-variation-settings: 'FILL' 1;">security</span>
+                            </div>
+                            <div class="flex flex-col gap-1 w-full">
+                                <div class="h-1 bg-outline-variant w-3/4 rounded"></div>
+                                <div class="h-1 bg-outline-variant w-1/2 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Spinner -->
+                    <div class="flex items-center gap-3">
+                        <svg class="spinner w-5 h-5 text-primary-container" fill="none" viewbox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                fill="currentColor"></path>
+                        </svg>
+                        <span class="font-body-md text-body-md text-on-surface-variant">Waiting for approval...</span>
+                    </div>
+                </div>
+                <!-- Success State (Initially Hidden) -->
+                <div class="hidden flex flex-col items-center justify-center h-full w-full opacity-0 transition-opacity duration-500 pt-stack-md"
+                    id="state-success">
+                    <div
+                        class="w-16 h-16 bg-[#008542] rounded-full flex items-center justify-center mb-stack-md shadow-sm">
+                        <span class="material-symbols-outlined text-on-primary text-[32px]"
+                            style="font-variation-settings: 'FILL' 1;">check</span>
+                    </div>
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface mb-1">Success</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Logging you in...</p>
+                </div>
+            </div>
+        </div>
+        <!-- Inner Links -->
+        <div class="mt-stack-lg w-full flex justify-center border-t border-secondary-container pt-stack-md">
+            <a class="font-label-sm text-label-sm text-primary-container hover:text-primary transition-colors cursor-pointer font-medium"
+                href="#">
+                Other options
+            </a>
+        </div>
+    </main>
+    <!-- Outer Help Link -->
+    <div class="mt-stack-md relative z-10">
+        <a class="font-body-md text-body-md text-primary-fixed hover:text-white transition-colors cursor-pointer"
+            href="#">
+            Need help?
+        </a>
+    </div>
+    <!-- Simulation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const waitingState = document.getElementById('state-waiting');
+            const successState = document.getElementById('state-success');
+
+            // Simulate the 4-second delay for user approval
+            setTimeout(() => {
+                // Fade out waiting state
+                waitingState.style.opacity = '0';
+
+                setTimeout(() => {
+                    waitingState.classList.add('hidden');
+                    successState.classList.remove('hidden');
+
+                    // Trigger reflow to ensure transition happens
+                    void successState.offsetWidth;
+
+                    // Fade in success state
+                    successState.style.opacity = '1';
+                }, 300); // Wait for fade out transition
+
+            }, 4000);
+        });
+    </script>
+</body>
+
+</html>
+

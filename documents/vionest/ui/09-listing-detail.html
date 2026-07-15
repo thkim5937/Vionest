@@ -1,0 +1,265 @@
+<!-- VioNest - Listing Details (New) -->
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Listing Detail - VioNest</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#5f5e5e",
+                        "on-tertiary-fixed-variant": "#673d0c",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-fixed": "#2e004e",
+                        "surface-container-low": "#f3f4f5",
+                        "outline-variant": "#cfc2d3",
+                        "on-primary-fixed-variant": "#66209b",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary": "#ffffff",
+                        "primary": "#39005f",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#2d1600",
+                        "tertiary-fixed": "#ffdcbf",
+                        "on-secondary-container": "#636262",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#e0b6ff",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "outline": "#7e7383",
+                        "surface-variant": "#e1e3e4",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "primary-container": "#57068c",
+                        "surface-bright": "#f8f9fa",
+                        "primary-fixed": "#f2daff",
+                        "secondary-container": "#e2dfde",
+                        "surface-container": "#edeeef",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#c985ff",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#d0965f",
+                        "secondary-fixed": "#e5e2e1",
+                        "surface": "#f8f9fa",
+                        "on-error": "#ffffff",
+                        "on-background": "#191c1d",
+                        "tertiary-container": "#562f00",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-surface": "#191c1d",
+                        "surface-tint": "#803db5",
+                        "on-surface-variant": "#4c4451",
+                        "tertiary-fixed-dim": "#f8ba7f",
+                        "inverse-surface": "#2e3132",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "tertiary": "#381c00",
+                        "background": "#f8f9fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "1rem",
+                        "stack-lg": "2rem",
+                        "gutter": "1.5rem",
+                        "container-max": "1280px",
+                        "stack-sm": "0.5rem",
+                        "stack-md": "1rem",
+                        "margin-desktop": "2rem"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-price": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "display-price": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pb-24 md:pb-0">
+    <!-- Top Navigation (Desktop Only) -->
+    <header
+        class="hidden md:flex justify-between items-center px-margin-desktop py-4 w-full max-w-container-max mx-auto bg-surface-container-lowest sticky top-0 z-50 border-b border-outline-variant">
+        <div class="flex items-center gap-2 font-headline-md text-headline-md font-bold text-on-surface">
+            VioNest
+        </div>
+        <nav class="flex gap-6">
+            <a class="text-on-surface-variant font-body-md hover:bg-surface-container-high px-3 py-2 rounded-lg transition-colors"
+                href="#">Home</a>
+            <a class="text-primary font-body-md font-bold hover:bg-surface-container-high px-3 py-2 rounded-lg transition-colors"
+                href="#">Search</a>
+            <a class="text-on-surface-variant font-body-md hover:bg-surface-container-high px-3 py-2 rounded-lg transition-colors"
+                href="#">Saved</a>
+            <a class="text-on-surface-variant font-body-md hover:bg-surface-container-high px-3 py-2 rounded-lg transition-colors"
+                href="#">Inbox</a>
+        </nav>
+        <div class="flex items-center gap-4">
+            <div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden">
+                <span class="material-symbols-outlined text-on-surface-variant">person</span>
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow w-full max-w-3xl mx-auto bg-surface-container-lowest">
+        <!-- Hero Image Section -->
+        <div class="relative w-full h-[353px] md:h-[442px]">
+            <img class="w-full h-full object-cover"
+                data-alt="A brightly lit, modern apartment living room with high ceilings and large windows letting in natural sunlight. Hardwood floors, minimalist furniture, and a clean, professional aesthetic suitable for a premium student housing platform. The scene is welcoming and pristine, utilizing a light mode aesthetic with subtle violet accents."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw6m9Sy3c0pfWIhn5NhHL5Cy_ErIJ2HkUcf0itT4SWQ5kTHIbEQikNFoi6ac1pBn_ln7cTuMWUd9sXNVhZvosZGsLNuQ8F7XXbdhtuzVcBrU-bQgKvkX-afNtY3lu7D9pNxriSFoK7feG0wdld7wgrnvJY2oB_Y7OUEquZjtaUSaScNoJJ0B_00SwwHIjx6CeJimIxkQR4Z7Qh9tbW-QQwHC0g0gYgVJUIIaxdi6LSZ6o4N0v8-mlFHBo2-TzIgc0NQvJ3g3kS3Vre" />
+            <a class="absolute top-4 left-4 md:hidden w-10 h-10 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white z-10 transition-transform active:scale-95"
+                href="#">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+        </div>
+        <!-- Content Section -->
+        <div class="px-margin-mobile md:px-margin-desktop py-6 flex flex-col gap-6">
+            <!-- Header Info -->
+            <div class="flex flex-col gap-2">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 class="font-headline-md text-headline-md text-on-surface">Gramercy Green</h1>
+                        <p class="font-body-md text-on-surface-variant">310 3rd Ave, New York, NY 10010</p>
+                    </div>
+                    <div
+                        class="bg-primary-container text-on-primary font-label-sm text-label-sm px-2 py-1 rounded flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">bolt</span>
+                        92% Match
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 text-on-surface-variant font-body-md mt-2">
+                    <span class="material-symbols-outlined text-[18px]">subway</span>
+                    <span>6 at 23rd St · 2 min walk</span>
+                </div>
+                <div class="flex items-center gap-2 text-on-surface font-body-md font-medium mt-1">
+                    <span class="material-symbols-outlined text-[18px]">calendar_month</span>
+                    <span>Move-in: Immediate · 1 Resident</span>
+                </div>
+                <div class="mt-4 font-display-price text-display-price text-on-surface">
+                    $2,400<span class="font-body-md text-on-surface-variant font-normal">/mo</span>
+                </div>
+            </div>
+            <hr class="border-outline-variant" />
+            <!-- About the Space -->
+            <section class="flex flex-col gap-3">
+                <h2 class="font-headline-sm text-headline-sm text-on-surface">About the Space</h2>
+                <p class="font-body-md text-on-surface-variant leading-relaxed">
+                    Beautifully sunlit room in a modern Gramercy apartment. The space features high ceilings, hardwood
+                    floors, and a spacious closet. You'll be sharing the common areas with one other clean and quiet NYU
+                    graduate student.
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                    <div class="flex items-center gap-2 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[20px]">wifi</span>
+                        <span class="font-body-md">Wifi</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[20px]">local_laundry_service</span>
+                        <span class="font-body-md">Laundry</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[20px]">kitchen</span>
+                        <span class="font-body-md">Kitchen</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[20px]">hvac</span>
+                        <span class="font-body-md">Heating</span>
+                    </div>
+                </div>
+            </section>
+            <hr class="border-outline-variant" />
+            <!-- About Your Host -->
+            <section class="flex flex-col gap-4">
+                <h2 class="font-headline-sm text-headline-sm text-on-surface">About Your Host</h2>
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-full overflow-hidden bg-surface-variant">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A professional headshot of a friendly young male college student smiling in an outdoor campus setting on a sunny day. He is wearing casual but neat clothing, suitable for a trusted profile picture on a housing platform."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfP_6avjwePb8cY7ByVU6htydVS_SNQS543G--WLLaR_zKE9poksuIQNoGTM3cj5sPu4F6L1h338MCRQI8hl8IjxjICbjqrj0Mc__J39yxNb0Xof1qnk2r_Uj9ltLPzRKADBNnkECbB4KetQuLqOfCoVASY8jPt5tsHF6otpIpfgkrg44N5r8TMTpD5NxKBodmCnmKMNw-_uKDsqoKCsISeYN8RW-LW7lFHh434YKJ3HtoxAY5wK2c2N8n7zIYCVptAM5rPauT60VN" />
+                    </div>
+                    <div>
+                        <div class="font-headline-sm text-headline-sm text-on-surface">David</div>
+                        <div class="flex items-center gap-1 text-[#008542] font-label-sm mt-1">
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                            <span>NYU Verified</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    <span
+                        class="bg-surface-container px-3 py-1.5 rounded-full font-label-sm text-label-sm text-on-surface-variant">Male</span>
+                    <span
+                        class="bg-surface-container px-3 py-1.5 rounded-full font-label-sm text-label-sm text-on-surface-variant">Bedtime:
+                        10PM–12AM</span>
+                    <span
+                        class="bg-surface-container px-3 py-1.5 rounded-full font-label-sm text-label-sm text-on-surface-variant">Wake-up:
+                        6AM–8AM</span>
+                    <span
+                        class="bg-surface-container px-3 py-1.5 rounded-full font-label-sm text-label-sm text-on-surface-variant">Non-smoker</span>
+                    <span
+                        class="bg-surface-container px-3 py-1.5 rounded-full font-label-sm text-label-sm text-on-surface-variant">Cooks
+                        often</span>
+                    <span
+                        class="bg-surface-container px-3 py-1.5 rounded-full font-label-sm text-label-sm text-on-surface-variant">No
+                        pets</span>
+                    <span
+                        class="bg-surface-container px-3 py-1.5 rounded-full font-label-sm text-label-sm text-on-surface-variant">Rarely
+                        has guests</span>
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- Fixed Bottom Bar -->
+    <div
+        class="fixed bottom-0 w-full bg-surface-container-lowest border-t border-outline-variant p-4 z-40 md:relative md:border-none md:p-6 md:max-w-3xl md:mx-auto md:bg-transparent">
+        <button
+            class="w-full bg-primary-container text-on-primary font-headline-sm text-headline-sm py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-[#6607a6] transition-colors active:scale-[0.98]">
+            <span class="material-symbols-outlined">mail</span>
+            Send Message
+        </button>
+    </div>
+</body>
+
+</html>
+

@@ -1,0 +1,442 @@
+<!-- VioNest - Search Results (Updated) -->
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <title>VioNest - Search Results</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#39005f",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-surface": "#191c1d",
+                        "on-tertiary-fixed-variant": "#673d0c",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#f2daff",
+                        "on-surface-variant": "#4c4451",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#636262",
+                        "surface-tint": "#803db5",
+                        "tertiary-container": "#562f00",
+                        "on-tertiary-container": "#d0965f",
+                        "on-tertiary-fixed": "#2d1600",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "surface-variant": "#e1e3e4",
+                        "primary-container": "#57068c",
+                        "tertiary": "#381c00",
+                        "surface-dim": "#d9dadb",
+                        "secondary-fixed": "#e5e2e1",
+                        "surface-bright": "#f8f9fa",
+                        "inverse-on-surface": "#f0f1f2",
+                        "background": "#f8f9fa",
+                        "secondary": "#5f5e5e",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "inverse-primary": "#e0b6ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#edeeef",
+                        "surface": "#f8f9fa",
+                        "outline-variant": "#cfc2d3",
+                        "on-background": "#191c1d",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary-container": "#e2dfde",
+                        "tertiary-fixed-dim": "#f8ba7f",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#c985ff",
+                        "on-primary-fixed-variant": "#66209b",
+                        "inverse-surface": "#2e3132",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "tertiary-fixed": "#ffdcbf",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary-fixed": "#2e004e",
+                        "on-primary": "#ffffff",
+                        "outline": "#7e7383"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "0.5rem",
+                        "margin-desktop": "2rem",
+                        "gutter": "1.5rem",
+                        "container-max": "1280px",
+                        "stack-md": "1rem",
+                        "stack-lg": "2rem",
+                        "margin-mobile": "1rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-price": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-price": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0">
+    <!-- TopAppBar (Hidden on Mobile Search per shell logic, but included for Web/Tablet responsiveness if needed, though prompt specifies mobile) -->
+    <header
+        class="hidden md:flex justify-between items-center px-margin-desktop py-4 w-full max-w-container-max mx-auto bg-surface-container-lowest border-b border-outline-variant w-full top-0 sticky z-50 shadow-none">
+        <div
+            class="flex items-center gap-2 font-headline-md text-headline-md font-bold text-on-surface cursor-pointer active:opacity-80">
+            <span>VioNest</span>
+            <div class="w-px h-5 bg-outline-variant"></div>
+            <span class="material-symbols-outlined filled text-primary-container"
+                style="font-size: 20px;">local_fire_department</span>
+        </div>
+        <nav class="flex gap-6 items-center">
+            <a class="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg"
+                href="#">Home</a>
+            <a class="text-primary font-bold font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg"
+                href="#">Search</a>
+            <a class="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg"
+                href="#">Saved</a>
+            <a class="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg"
+                href="#">Inbox</a>
+        </nav>
+        <div
+            class="flex items-center gap-3 cursor-pointer active:opacity-80 hover:bg-surface-container-high transition-colors px-2 py-1 rounded-full">
+            <div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">person</span>
+            </div>
+        </div>
+    </header>
+    <!-- Mobile Search Filter Bar (Sticky Top) -->
+    <div
+        class="sticky top-0 z-40 bg-surface-container-lowest border-b border-outline-variant shadow-sm w-full md:hidden">
+        <!-- Brand Header for Mobile -->
+        <div class="flex items-center gap-2 px-margin-mobile pt-4 pb-2">
+            <span class="font-headline-md text-headline-md font-bold text-on-surface">VioNest</span>
+            <div class="w-px h-5 bg-outline-variant"></div>
+            <span class="material-symbols-outlined filled text-primary-container"
+                style="font-size: 20px;">local_fire_department</span>
+        </div>
+        <div class="px-margin-mobile pb-4 flex flex-col gap-stack-sm">
+            <!-- Row 1: Borough & Neighborhood -->
+            <div class="flex gap-3">
+                <div class="relative flex-1">
+                    <select
+                        class="w-full appearance-none bg-surface-container-lowest border border-outline-variant text-on-surface font-body-md text-body-md rounded-lg pl-3 pr-8 py-2.5 focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container">
+                        <option>Manhattan</option>
+                        <option>Brooklyn</option>
+                        <option>Queens</option>
+                    </select>
+                    <span
+                        class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none"
+                        style="font-size: 20px;">expand_more</span>
+                </div>
+                <div class="relative flex-1">
+                    <select
+                        class="w-full appearance-none bg-surface-container-lowest border border-outline-variant text-on-surface font-body-md text-body-md rounded-lg pl-3 pr-8 py-2.5 focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container">
+                        <option>East Village</option>
+                        <option>Greenwich Village</option>
+                        <option>Union Square</option>
+                    </select>
+                    <span
+                        class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none"
+                        style="font-size: 20px;">expand_more</span>
+                </div>
+            </div>
+            <!-- Row 2: Min & Max Price -->
+            <div class="flex gap-3">
+                <div class="relative flex-1">
+                    <span
+                        class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-body-md text-body-md">$</span>
+                    <input
+                        class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface font-body-md text-body-md rounded-lg pl-7 pr-3 py-2.5 focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
+                        placeholder="Min" type="number" />
+                </div>
+                <div class="relative flex-1">
+                    <span
+                        class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-body-md text-body-md">$</span>
+                    <input
+                        class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface font-body-md text-body-md rounded-lg pl-7 pr-3 py-2.5 focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container"
+                        placeholder="Max" type="number" />
+                </div>
+            </div>
+            <!-- Row 3: Search Button -->
+            <button
+                class="w-full bg-primary-container text-on-primary font-headline-sm text-headline-sm py-3 rounded-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
+                <span class="material-symbols-outlined" style="font-size: 20px;">search</span>
+                Search
+            </button>
+        </div>
+    </div>
+    <!-- Main Content: Scrollable Listing Cards -->
+    <main
+        class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg flex flex-col gap-gutter">
+        <!-- Results Summary -->
+        <div class="flex justify-between items-end pb-2 border-b border-outline-variant md:hidden">
+            <h1 class="font-headline-sm text-headline-sm text-on-surface">32 properties found</h1>
+            <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+                <span class="material-symbols-outlined" style="font-size: 16px;">sort</span>
+                Match Score
+            </span>
+        </div>
+        <!-- Card 1 -->
+        <article
+            class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] transition-shadow duration-200">
+            <div class="relative w-full pt-[75%] bg-surface-variant">
+                <img class="absolute inset-0 w-full h-full object-cover"
+                    data-alt="A modern, brightly lit living room in an East Village apartment. High ceilings, large sash windows letting in natural sunlight. Clean white walls, minimalist Scandinavian furniture, a small dining table. Corporate modern photography style with a focus on space and verified reliability."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfMcJeSY03Bzf3jF3tfE9HeMDkEi6wTDkRn70tHk_weDnMRA14EtHePMBYi3oomK72uDSUeAYYEQWR3_szzUH58B0HlavoTHx3mSGSskRlop9szsWcj9gO82-0pvVWJ5mPZmBe3uwWyEdvCf7EViaSEUDQtp9-7V3KGSGCuL2pc9ifV93JBKOvpdYi6B8_SNdCNc914IUWCtBJx_t_mE3gm_1D3qn77_-fbi_304-ykACZYgWDymO7ld6YolnCZiRFcq_kV8Y3Ejsn" />
+                <!-- Match Score Badge -->
+                <div
+                    class="absolute top-3 right-3 bg-primary-container text-on-primary font-label-caps text-label-caps px-2 py-1 rounded shadow-sm z-10 flex items-center gap-1">
+                    <span class="material-symbols-outlined filled" style="font-size: 14px;">verified</span>
+                    95% Match
+                </div>
+                <!-- Verified Student Badge (Secondary) -->
+                <div
+                    class="absolute bottom-3 left-3 bg-[#008542] text-white font-label-caps text-label-caps px-2 py-1 rounded shadow-sm z-10 flex items-center gap-1">
+                    <span class="material-symbols-outlined filled" style="font-size: 14px;">school</span>
+                    NYU Verified
+                </div>
+            </div>
+            <div class="p-4 flex flex-col gap-stack-sm">
+                <!-- Header & Price -->
+                <div class="flex justify-between items-start gap-4">
+                    <div>
+                        <h2 class="font-headline-sm text-headline-sm text-on-surface line-clamp-1">The Palladium, 140 E
+                            14th St</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant">East Village</p>
+                    </div>
+                    <div class="text-right whitespace-nowrap">
+                        <span class="font-display-price text-display-price text-on-surface block">$2,100</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">/ mo</span>
+                    </div>
+                </div>
+                <!-- Meta Details -->
+                <div class="flex gap-4 border-y border-outline-variant py-2 my-1">
+                    <div class="flex items-center gap-1.5 font-body-md text-body-md text-on-surface-variant">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">calendar_today</span>
+                        Move-in: Aug 1
+                    </div>
+                    <div class="w-px bg-outline-variant"></div>
+                    <div class="flex items-center gap-1.5 font-body-md text-body-md text-on-surface-variant">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">group</span>
+                        2 Residents
+                    </div>
+                </div>
+                <!-- Transit -->
+                <div class="flex items-start gap-2 font-body-md text-body-md text-on-surface-variant">
+                    <span class="material-symbols-outlined shrink-0 mt-0.5" style="font-size: 18px;">subway</span>
+                    <span>L, N, Q, R, W, 4, 5, 6 at Union Sq (3 min walk)</span>
+                </div>
+                <!-- Footer / Poster -->
+                <div class="flex items-center gap-2 mt-2 pt-2">
+                    <img class="w-6 h-6 rounded-full object-cover bg-surface-variant"
+                        data-alt="A small circular headshot of a female college student smiling, wearing a simple sweater. Professional but approachable lighting, corporate modern aesthetic."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5JI0272A1rWOVcl8cJ77kMbsje4PlUXbDqIMJ3qfiNime_uuOx0MOqEguKWcg5lLPelZ2qICkjOa4MTdmhXqMhdvgwB7rou0DzfI5CTOR6KgsQCRwL3yvKPGubOeaM0-urntgEI7M6e4tKOMVu-Nh-acyzwijHFpCGf1WE74u0salVLnUOpUKSwTYMS3pP1-gZxaxJb9kZglG0VgTDyPtyjYJYsZ2O_zULaMYSUUX9oKyTjNggTM7Vx0JOsIaaMoSg0K0jSngSujS" />
+                    <span class="font-label-sm text-label-sm text-on-surface">Posted by Sarah</span>
+                </div>
+            </div>
+        </article>
+        <!-- Card 2 -->
+        <article
+            class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] transition-shadow duration-200">
+            <div class="relative w-full pt-[75%] bg-surface-variant">
+                <img class="absolute inset-0 w-full h-full object-cover"
+                    data-alt="A spacious bedroom in a Greenwich Village high-rise. Large windows overlooking the city skyline at daytime. Hardwood floors, a queen-sized bed with neat linens, and a small desk setup. Clean, corporate real estate photography style, high information density."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRnMoVrOPAMG5R_b72XPlTRPEWRD5LIoZSnmlzELb9Fcs_v8DczRJCk1IcUxdu686M4hZ39Fmq7dkhWdM6p3ESuzXAtDbKuSNpNnJIATPTXKEAeYYYP629O-9XApryx5kzvyON9FpAXM6B_MD_8gX93V5007B3AeovwFnfmEm9LTXqWzuYwNSrkdxzOuomr1x1al6bKROoBMMQRiTX_JOC9xg2fCo_MOJXoxeXUgyTv5yA57cCv9GfKLq0C_It7Dk0UV1wA8Np8_ee" />
+                <div
+                    class="absolute top-3 right-3 bg-primary-container text-on-primary font-label-caps text-label-caps px-2 py-1 rounded shadow-sm z-10 flex items-center gap-1">
+                    <span class="material-symbols-outlined filled" style="font-size: 14px;">verified</span>
+                    88% Match
+                </div>
+            </div>
+            <div class="p-4 flex flex-col gap-stack-sm">
+                <div class="flex justify-between items-start gap-4">
+                    <div>
+                        <h2 class="font-headline-sm text-headline-sm text-on-surface line-clamp-1">Washington Square
+                            Village</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Greenwich Village</p>
+                    </div>
+                    <div class="text-right whitespace-nowrap">
+                        <span class="font-display-price text-display-price text-on-surface block">$1,850</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">/ mo</span>
+                    </div>
+                </div>
+                <div class="flex gap-4 border-y border-outline-variant py-2 my-1">
+                    <div class="flex items-center gap-1.5 font-body-md text-body-md text-on-surface-variant">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">calendar_today</span>
+                        Move-in: Sep 1
+                    </div>
+                    <div class="w-px bg-outline-variant"></div>
+                    <div class="flex items-center gap-1.5 font-body-md text-body-md text-on-surface-variant">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">group</span>
+                        3 Residents
+                    </div>
+                </div>
+                <div class="flex items-start gap-2 font-body-md text-body-md text-on-surface-variant">
+                    <span class="material-symbols-outlined shrink-0 mt-0.5" style="font-size: 18px;">subway</span>
+                    <span>A, B, C, D, E, F, M at W 4th St (5 min walk)</span>
+                </div>
+                <div class="flex items-center gap-2 mt-2 pt-2">
+                    <div
+                        class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant font-label-sm">
+                        M</div>
+                    <span class="font-label-sm text-label-sm text-on-surface">Posted by Michael</span>
+                </div>
+            </div>
+        </article>
+        <!-- Card 3 -->
+        <article
+            class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] transition-shadow duration-200">
+            <div class="relative w-full pt-[75%] bg-surface-variant">
+                <img class="absolute inset-0 w-full h-full object-cover"
+                    data-alt="A modern kitchen and dining area in a Gramercy apartment. Stainless steel appliances, granite countertops, bar seating. Bright, clean lighting, suggesting a well-maintained, premium student housing option."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeomKh0-CuH_SLLJw2C4ysh2knGafGtXHlJt0cChKwc7o4IZ8qv4PfDAiPsPu3Z6zAclOP9dQkTdDqgHJY3UnM7yr05b1eNyqMJ8FxIZ8akpa2Qual9dSI0O3Yq2eCOYcQFL-1MFH_dZVsSJAmoTkiubOhIdbd6OT2KvxUVTBNwinKDYfUCtSn1a8ZD8eqXGaXGTulS7tXJ_rMU4vcFW1QjtyDW8reUUf-wySSjdLDhMcho4fsEqYVhyXyKh06STWFbc1f7AkmpMRm" />
+                <div
+                    class="absolute top-3 right-3 bg-primary-container text-on-primary font-label-caps text-label-caps px-2 py-1 rounded shadow-sm z-10 flex items-center gap-1">
+                    <span class="material-symbols-outlined filled" style="font-size: 14px;">verified</span>
+                    82% Match
+                </div>
+                <div
+                    class="absolute bottom-3 left-3 bg-[#008542] text-white font-label-caps text-label-caps px-2 py-1 rounded shadow-sm z-10 flex items-center gap-1">
+                    <span class="material-symbols-outlined filled" style="font-size: 14px;">school</span>
+                    NYU Verified
+                </div>
+            </div>
+            <div class="p-4 flex flex-col gap-stack-sm">
+                <div class="flex justify-between items-start gap-4">
+                    <div>
+                        <h2 class="font-headline-sm text-headline-sm text-on-surface line-clamp-1">Gramercy Green, 310
+                            3rd Ave</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Gramercy Park</p>
+                    </div>
+                    <div class="text-right whitespace-nowrap">
+                        <span class="font-display-price text-display-price text-on-surface block">$2,400</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">/ mo</span>
+                    </div>
+                </div>
+                <div class="flex gap-4 border-y border-outline-variant py-2 my-1">
+                    <div class="flex items-center gap-1.5 font-body-md text-body-md text-on-surface-variant">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">calendar_today</span>
+                        Move-in: Immediate
+                    </div>
+                    <div class="w-px bg-outline-variant"></div>
+                    <div class="flex items-center gap-1.5 font-body-md text-body-md text-on-surface-variant">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">group</span>
+                        1 Resident
+                    </div>
+                </div>
+                <div class="flex items-start gap-2 font-body-md text-body-md text-on-surface-variant">
+                    <span class="material-symbols-outlined shrink-0 mt-0.5" style="font-size: 18px;">subway</span>
+                    <span>6 at 23rd St (2 min walk)</span>
+                </div>
+                <div class="flex items-center gap-2 mt-2 pt-2">
+                    <img class="w-6 h-6 rounded-full object-cover bg-surface-variant"
+                        data-alt="A small circular headshot of a male college student wearing glasses and a neat collared shirt. Corporate modern aesthetic, safe and verified feeling."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdcJBnVjnMynbLaTBRwcjqMWN1plOE8-RmMXzQWmojQapioEixWTKJjDFUnEyf5icecoWrR0zyeZ9TVwcaf4wNtB8Grw0dcIofj6EXSh-5zVzdrC9JpQ2MXHGEHOyzAaYImDE43fm2O4F3zX0bIO7jc9giXfDKS8rqwkOofLuTQU8_gfkoLuUK5CJUPqZjZdQBGdq1511E_ZS9ial1kI9XcOC2uJJ2pItl4Rk_9RfI0b09WdzF70Ze9RlR8_MPI069FTVVN-9TRbQL" />
+                    <span class="font-label-sm text-label-sm text-on-surface">Posted by David</span>
+                </div>
+            </div>
+        </article>
+        <!-- Loading Indicator for infinite scroll -->
+        <div class="flex justify-center py-4">
+            <div class="w-8 h-8 rounded-full border-2 border-outline-variant border-t-primary-container animate-spin">
+            </div>
+        </div>
+    </main>
+    <!-- BottomNavBar (Mobile Only) -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface border-t border-outline-variant shadow-sm z-50">
+        <!-- Home (Inactive) -->
+        <a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-primary-container transition-all active:scale-95 duration-150 w-16 h-12"
+            href="#">
+            <span class="material-symbols-outlined mb-1" style="font-size: 24px;">home</span>
+            <span class="truncate">Home</span>
+        </a>
+        <!-- Search (Active - per prompt intent) -->
+        <a class="flex flex-col items-center justify-center text-primary font-bold font-label-sm text-label-sm hover:text-primary-container transition-all active:scale-95 duration-150 w-16 h-12"
+            href="#">
+            <span class="material-symbols-outlined filled mb-1" style="font-size: 24px;">search</span>
+            <span class="truncate">Search</span>
+        </a>
+        <!-- Saved (Inactive) -->
+        <a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-primary-container transition-all active:scale-95 duration-150 w-16 h-12"
+            href="#">
+            <span class="material-symbols-outlined mb-1" style="font-size: 24px;">bookmark</span>
+            <span class="truncate">Saved</span>
+        </a>
+        <!-- Inbox (Inactive) -->
+        <a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-primary-container transition-all active:scale-95 duration-150 w-16 h-12"
+            href="#">
+            <span class="material-symbols-outlined mb-1" style="font-size: 24px;">mail</span>
+            <span class="truncate">Inbox</span>
+        </a>
+        <!-- Profile (Inactive) -->
+        <a class="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-primary-container transition-all active:scale-95 duration-150 w-16 h-12"
+            href="#">
+            <span class="material-symbols-outlined mb-1" style="font-size: 24px;">person</span>
+            <span class="truncate">Profile</span>
+        </a>
+    </nav>
+</body>
+
+</html>
+

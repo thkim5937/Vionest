@@ -1,0 +1,281 @@
+<!-- VioNest - Inbox -->
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <title>VioNest - Inbox</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#4c4451",
+                        "surface-container": "#edeeef",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "surface-container-low": "#f3f4f5",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#f8ba7f",
+                        "tertiary-fixed": "#ffdcbf",
+                        "on-tertiary-container": "#d0965f",
+                        "primary-fixed": "#f2daff",
+                        "primary": "#39005f",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "secondary-container": "#e2dfde",
+                        "on-background": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#c985ff",
+                        "outline": "#7e7383",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#e0b6ff",
+                        "surface-tint": "#803db5",
+                        "surface-dim": "#d9dadb",
+                        "background": "#f8f9fa",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#66209b",
+                        "on-primary-fixed": "#2e004e",
+                        "inverse-surface": "#2e3132",
+                        "secondary-fixed": "#e5e2e1",
+                        "secondary": "#5f5e5e",
+                        "on-secondary-container": "#636262",
+                        "surface-container-high": "#e7e8e9",
+                        "tertiary-container": "#562f00",
+                        "on-tertiary-fixed-variant": "#673d0c",
+                        "tertiary": "#381c00",
+                        "surface": "#f8f9fa",
+                        "primary-container": "#57068c",
+                        "outline-variant": "#cfc2d3",
+                        "on-tertiary-fixed": "#2d1600",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "0.5rem",
+                        "stack-md": "1rem",
+                        "margin-desktop": "2rem",
+                        "margin-mobile": "1rem",
+                        "container-max": "1280px",
+                        "stack-lg": "2rem",
+                        "gutter": "1.5rem",
+                        "safe": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-price": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "display-price": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased">
+    <!-- TopAppBar -->
+    <header class="w-full top-0 sticky bg-surface dark:bg-surface-dim z-50">
+        <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 w-full">
+            <div class="flex items-center gap-2">
+                <span
+                    class="material-symbols-outlined text-primary dark:text-primary-fixed cursor-pointer active:scale-95 duration-150">menu</span>
+            </div>
+            <div
+                class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed flex items-center gap-2">
+                Messages
+            </div>
+            <div
+                class="w-8 h-8 rounded-full overflow-hidden border border-surface-variant cursor-pointer active:scale-95 duration-150">
+                <img class="w-full h-full object-cover"
+                    data-alt="A small, circular profile picture of a young adult student looking professional, bright lighting, high quality, light mode aesthetic, corporate modern style."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIBIqKaNQq1OIviuDLdfTpv6hNm4-zPHrTvc_C09aIM4AcOfTCEtVGuKVR6vFLbZJRsE_dP6SWMQNMbUONZepzN2bx2YK6J8wBF9Ev04g8SayvKH_ZmffYpOjfnshP_x0Ex3_OwDIKgv_jLix6N_ZDUHgV0J6xd7wYvbftTTKd9a8onJoQGIkCpqrf9BplytZR0jfv28KX8pHDgoSaGEW3mt7ZJnlakfwFDBFGbcAW9IbeH3Spio0aSnUSvt4vooY6ulW3Dy_hkFJK" />
+            </div>
+        </div>
+        <div class="w-full h-[1px] bg-surface-variant dark:bg-on-surface-variant shadow-sm"></div>
+    </header>
+    <!-- Main Content Area - Inbox List -->
+    <main class="flex-grow pb-20"> <!-- Padding bottom to account for fixed bottom nav -->
+        <ul class="divide-y divide-surface-variant">
+            <!-- Row 1: Unread -->
+            <li
+                class="flex items-start gap-4 p-4 hover:bg-surface-container-low transition-colors cursor-pointer bg-surface-bright relative group">
+                <div class="relative flex-shrink-0">
+                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A portrait of a male student named David, warm friendly smile, standing in a brightly lit modern apartment building lobby, light mode aesthetic, corporate modern vibe."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFU64WSkH72c4mmxRnDzy2u2cKKxLQ1iknt1C7F5DlHqg88p-7EPs5QACb1jRSGLg_WFFpNJ1h3Y0Og3nFF85pWkjd0FZAD3usw5z7hGHLGZZuSAFm_ywmrnwdGDGe4ya0sfZwSi6M00aqn6QyVk9ijAEGLKYeDhWiyCOrGjBy9MWh33I7dsnhKS0zoLYwoa9uJ7VFlEkGT9HfOlptCLQ-H8iAmwErBsHKWmhFdagebcBL373CiYK3HjCJTh_EoGTFmNGM8eDt9-Vv" />
+                    </div>
+                    <div
+                        class="absolute -top-1 -right-1 w-5 h-5 bg-primary-container text-on-primary rounded-full flex items-center justify-center font-label-sm text-label-sm font-bold border-2 border-surface-bright">
+                        1
+                    </div>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface truncate">David</h3>
+                        <span
+                            class="font-label-sm text-label-sm text-primary-container font-semibold whitespace-nowrap ml-2">2:30
+                            PM</span>
+                    </div>
+                    <p class="font-label-sm text-label-sm text-secondary mb-1 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">apartment</span>
+                        Gramercy Green
+                    </p>
+                    <p class="font-body-md text-body-md text-on-surface font-medium truncate">
+                        Hey! Is the room still available for August?
+                    </p>
+                </div>
+            </li>
+            <!-- Row 2 -->
+            <li
+                class="flex items-start gap-4 p-4 hover:bg-surface-container-low transition-colors cursor-pointer bg-surface group">
+                <div class="relative flex-shrink-0">
+                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A portrait of a female student named Sarah, wearing professional casual attire, standing near a sunny window in an urban high-rise, light mode aesthetic."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEMeXZE3ayQ03El0ne_h5Qj1uMSisbkZ7mP5XlP3eFtrXaRfFaxaZh_6lG0wmdHIpuYGqbFohGQPZ8SlUB4QuXOhQBcRllXQ0LRAGZWiDqtTz3IHbseeO_QmIVk1Rfqv5MgAgsXBC_Y08qku_yxYOwPxc71Pc2bJaPQizD5_IHPt2EvhgyQ850gtGFNX_V7bEgz92jjfEHFExoUF2G4bn64uIoVGCOcxKTQBokz8H-qv4clU66WmssV_F_6Hk64XVdlp3_0YX505ei" />
+                    </div>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface truncate">Sarah</h3>
+                        <span class="font-label-sm text-label-sm text-secondary whitespace-nowrap ml-2">11:45 AM</span>
+                    </div>
+                    <p class="font-label-sm text-label-sm text-secondary mb-1 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">apartment</span>
+                        The Palladium
+                    </p>
+                    <p class="font-body-md text-body-md text-secondary truncate">
+                        The viewing is scheduled for tomorrow at 5.
+                    </p>
+                </div>
+            </li>
+            <!-- Row 3 -->
+            <li
+                class="flex items-start gap-4 p-4 hover:bg-surface-container-low transition-colors cursor-pointer bg-surface group">
+                <div class="relative flex-shrink-0">
+                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A portrait of a male student named Michael, wearing glasses and a casual button-down shirt, sitting in a modern campus study area, bright daylight, light mode aesthetic."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFeKSPJSOUNwIevm47Pv0jHAp3SVYP6fnXqszGxXQYuvEDHgAZ9D9TBry2cy1JHrfUVuCr8Z_R6spOx3TtxEiGhlorHBQkYbpVTSxYuVbGn_BXJOfTltXs2LbsQ3GIHCM8MjhZ-Zxn6SU1NSm-MT5wzNI3wB7DzZrQ-F7D6vC51BWuE6yv6Rz-6ZVjpWOP0ZSJwLx3aWNHeG_hqO8jvlpMf8wTsnq3FZeLXRZnBhuYfed14EiA0AvvMrquW7xKZ1pl2SCvVhyPWdrr" />
+                    </div>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface truncate">Michael</h3>
+                        <span class="font-label-sm text-label-sm text-secondary whitespace-nowrap ml-2">Yesterday</span>
+                    </div>
+                    <p class="font-label-sm text-label-sm text-secondary mb-1 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">apartment</span>
+                        Washington Square Village
+                    </p>
+                    <p class="font-body-md text-body-md text-secondary truncate">
+                        Thanks for the info, I'll let you know.
+                    </p>
+                </div>
+            </li>
+            <!-- Row 4 -->
+            <li
+                class="flex items-start gap-4 p-4 hover:bg-surface-container-low transition-colors cursor-pointer bg-surface group">
+                <div class="relative flex-shrink-0">
+                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A portrait of a female student named Jessica, standing in a brightly lit modern kitchen with white cabinets, suggesting a real estate showing, light mode aesthetic."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLm3jcNpzbEaEx5m5h9nSulhTJXbM_wunQ4tZLZaTVRWOv2KGIV_Jpn0PYoW4-gEK5SoKYKS_2vkukgNammCO-yJ8y_gFlVR4ItN4Scsjlf9APMbXZdQUuCzLB8LsIVzd7wh18K0BZT3eGIMsAx_IWWpEc83Dq70a-VaZI5YNWBagzVPLOyUBtEN4Lm48p3uFUnt3peoVzX8HwTzkqYTaFZoof4liGCB4YXQcaV8Y9ZTvmrV7LNuGV0dJiF1DcoYmB4z26zhfNq2KO" />
+                    </div>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface truncate">Jessica</h3>
+                        <span class="font-label-sm text-label-sm text-secondary whitespace-nowrap ml-2">Monday</span>
+                    </div>
+                    <p class="font-label-sm text-label-sm text-secondary mb-1 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">apartment</span>
+                        East Village Loft
+                    </p>
+                    <p class="font-body-md text-body-md text-secondary truncate">
+                        I've uploaded the new photos of the kitchen.
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </main>
+    <!-- BottomNavBar (Mobile Only) -->
+    <nav
+        class="md:hidden fixed bottom-0 w-full z-50 bg-surface dark:bg-surface-dim border-t border-surface-variant dark:border-on-surface-variant shadow-[0_-4px_12px_rgba(0,0,0,0.02)]">
+        <div class="flex justify-around items-center h-16 w-full px-4 pb-safe">
+            <!-- Search (Inactive) -->
+            <div
+                class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low dark:hover:bg-surface-container-high active:scale-90 transition-transform duration-200 cursor-pointer w-16 h-full rounded-lg">
+                <span class="material-symbols-outlined mb-1">search</span>
+                <span class="font-label-sm text-label-sm">Search</span>
+            </div>
+            <!-- Messages (Active) -->
+            <div
+                class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed font-bold active:scale-90 transition-transform duration-200 cursor-pointer w-16 h-full rounded-lg relative">
+                <!-- Badge for unread total -->
+                <div class="absolute top-1 right-2 w-2 h-2 bg-primary-container rounded-full"></div>
+                <span class="material-symbols-outlined mb-1"
+                    style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+                <span class="font-label-sm text-label-sm">Messages</span>
+            </div>
+            <!-- Profile (Inactive) -->
+            <div
+                class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low dark:hover:bg-surface-container-high active:scale-90 transition-transform duration-200 cursor-pointer w-16 h-full rounded-lg">
+                <span class="material-symbols-outlined mb-1">person</span>
+                <span class="font-label-sm text-label-sm">Profile</span>
+            </div>
+        </div>
+    </nav>
+</body>
+
+</html>
+

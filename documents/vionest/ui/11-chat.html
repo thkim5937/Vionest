@@ -1,0 +1,209 @@
+<!-- VioNest - Chat with David -->
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>VioNest - Chat</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e7e8e9",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-container": "#d0965f",
+                        "primary": "#39005f",
+                        "tertiary-fixed-dim": "#f8ba7f",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "primary-fixed": "#f2daff",
+                        "on-secondary-container": "#636262",
+                        "on-background": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#381c00",
+                        "surface-tint": "#803db5",
+                        "inverse-surface": "#2e3132",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#c985ff",
+                        "surface-container": "#edeeef",
+                        "secondary": "#5f5e5e",
+                        "inverse-primary": "#e0b6ff",
+                        "secondary-fixed": "#e5e2e1",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#673d0c",
+                        "surface-dim": "#d9dadb",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary-fixed": "#2d1600",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "outline-variant": "#cfc2d3",
+                        "tertiary-fixed": "#ffdcbf",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-container": "#e2dfde",
+                        "background": "#f8f9fa",
+                        "on-surface-variant": "#4c4451",
+                        "on-primary-fixed-variant": "#66209b",
+                        "on-primary-fixed": "#2e004e",
+                        "primary-container": "#57068c",
+                        "tertiary-container": "#562f00",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "on-error-container": "#93000a",
+                        "outline": "#7e7383"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "stack-lg": "2rem",
+                        "margin-desktop": "2rem",
+                        "gutter": "1.5rem",
+                        "stack-sm": "0.5rem",
+                        "stack-md": "1rem",
+                        "margin-mobile": "1rem"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "display-price": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-price": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background h-screen flex flex-col font-body-md text-body-md overflow-hidden">
+    <!-- Top App Bar (Chat specific) -->
+    <header
+        class="bg-surface border-b border-surface-variant flex items-center justify-between px-margin-mobile py-4 w-full sticky top-0 z-50">
+        <button
+            class="text-on-surface hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-150">
+            <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+        </button>
+        <div class="flex flex-col items-center">
+            <h1 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                David
+                <span
+                    class="inline-flex items-center gap-1 bg-[#008542]/10 border border-[#008542]/30 px-2 py-0.5 rounded-full text-[#008542] font-label-sm text-label-sm">
+                    <span class="material-symbols-outlined text-[14px]" data-icon="verified">verified</span>
+                    NYU Verified
+                </span>
+            </h1>
+            <p class="text-secondary font-label-sm text-label-sm">Gramercy Green</p>
+        </div>
+        <button
+            class="text-on-surface hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-150">
+            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+        </button>
+    </header>
+    <!-- Chat Canvas -->
+    <main class="flex-1 overflow-y-auto px-margin-mobile py-4 flex flex-col gap-4">
+        <!-- Timestamp -->
+        <div class="flex justify-center">
+            <span
+                class="text-secondary font-label-sm text-label-sm bg-surface-container-low px-3 py-1 rounded-full">Today
+                10:42 AM</span>
+        </div>
+        <!-- Sender Message -->
+        <div class="flex justify-end mb-2">
+            <div class="bg-primary-container text-on-primary max-w-[75%] rounded-2xl rounded-tr-sm px-4 py-2 shadow-sm">
+                <p>Hi David, I'm interested in the room! Is it still available for August?</p>
+            </div>
+        </div>
+        <!-- Receiver Message -->
+        <div class="flex justify-start mb-2">
+            <div
+                class="bg-surface-container text-on-surface max-w-[75%] rounded-2xl rounded-tl-sm px-4 py-2 border border-surface-variant shadow-sm">
+                <p>Hey! Yes, it's still available.</p>
+            </div>
+        </div>
+        <!-- Sender Message -->
+        <div class="flex justify-end mb-2">
+            <div class="bg-primary-container text-on-primary max-w-[75%] rounded-2xl rounded-tr-sm px-4 py-2 shadow-sm">
+                <p>I can come by for a viewing on Tuesday.</p>
+            </div>
+        </div>
+        <!-- Timestamp -->
+        <div class="flex justify-center mt-2 mb-2">
+            <span
+                class="text-secondary font-label-sm text-label-sm bg-surface-container-low px-3 py-1 rounded-full">11:05
+                AM</span>
+        </div>
+        <!-- Receiver Message -->
+        <div class="flex justify-start mb-2">
+            <div
+                class="bg-surface-container text-on-surface max-w-[75%] rounded-2xl rounded-tl-sm px-4 py-2 border border-surface-variant shadow-sm">
+                <p>Tuesday at 5 PM works for me. Does that fit your schedule?</p>
+            </div>
+        </div>
+        <!-- System Message / Payment Request -->
+        <div class="flex justify-center my-4">
+            <button
+                class="bg-surface-container-lowest border border-primary-container text-primary-container hover:bg-primary-fixed-dim px-6 py-2 rounded-full font-label-sm text-label-sm flex items-center gap-2 transition-colors active:scale-95 duration-150 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]" data-icon="payments">payments</span>
+                Request Payment
+            </button>
+        </div>
+    </main>
+    <!-- Bottom Input Area -->
+    <footer class="bg-surface border-t border-surface-variant p-margin-mobile flex items-center gap-3">
+        <button class="text-secondary hover:text-primary transition-colors p-2 rounded-full active:scale-95">
+            <span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+        </button>
+        <div
+            class="flex-1 bg-surface-container-low rounded-full flex items-center px-4 py-2 border border-surface-variant focus-within:border-primary-container focus-within:ring-1 focus-within:ring-primary-container transition-all">
+            <input
+                class="bg-transparent border-none focus:ring-0 w-full font-body-md text-body-md text-on-surface placeholder:text-secondary p-0"
+                placeholder="Type a message..." type="text" />
+        </div>
+        <button
+            class="bg-primary-container text-on-primary p-3 rounded-full hover:bg-primary transition-colors active:scale-90 flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined" data-icon="send">send</span>
+        </button>
+    </footer>
+</body>
+
+</html>
+

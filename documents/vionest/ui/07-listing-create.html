@@ -1,0 +1,329 @@
+<!-- VioNest - List Your Sublet -->
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>List Your Sublet - VioNest</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-tertiary-fixed-variant": "#673d0c",
+                        "tertiary-container": "#562f00",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "secondary-container": "#e2dfde",
+                        "on-background": "#191c1d",
+                        "inverse-primary": "#e0b6ff",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#cfc2d3",
+                        "on-tertiary-fixed": "#2d1600",
+                        "secondary": "#5f5e5e",
+                        "surface-dim": "#d9dadb",
+                        "surface": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-high": "#e7e8e9",
+                        "tertiary-fixed": "#ffdcbf",
+                        "primary-container": "#57068c",
+                        "outline": "#7e7383",
+                        "primary-fixed": "#f2daff",
+                        "on-secondary": "#ffffff",
+                        "primary": "#39005f",
+                        "on-tertiary-container": "#d0965f",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "on-surface-variant": "#4c4451",
+                        "on-surface": "#191c1d",
+                        "secondary-fixed": "#e5e2e1",
+                        "surface-variant": "#e1e3e4",
+                        "surface-tint": "#803db5",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary-fixed-variant": "#66209b",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "on-primary-container": "#c985ff",
+                        "tertiary-fixed-dim": "#f8ba7f",
+                        "on-primary-fixed": "#2e004e",
+                        "on-secondary-container": "#636262",
+                        "background": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "tertiary": "#381c00",
+                        "inverse-surface": "#2e3132",
+                        "surface-container": "#edeeef"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "1.5rem",
+                        "stack-sm": "0.5rem",
+                        "margin-desktop": "2rem",
+                        "margin-mobile": "1rem",
+                        "stack-md": "1rem",
+                        "stack-lg": "2rem",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "display-price": [
+                            "Inter"
+                        ],
+                        "body-lg": [
+                            "Inter"
+                        ],
+                        "label-sm": [
+                            "Inter"
+                        ],
+                        "headline-sm": [
+                            "Inter"
+                        ],
+                        "headline-md": [
+                            "Inter"
+                        ],
+                        "body-md": [
+                            "Inter"
+                        ],
+                        "label-caps": [
+                            "Inter"
+                        ]
+                    },
+                    "fontSize": {
+                        "display-price": [
+                            "24px",
+                            {
+                                "lineHeight": "32px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "body-lg": [
+                            "16px",
+                            {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "label-sm": [
+                            "12px",
+                            {
+                                "lineHeight": "16px",
+                                "fontWeight": "500"
+                            }
+                        ],
+                        "headline-sm": [
+                            "16px",
+                            {
+                                "lineHeight": "24px",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "headline-md": [
+                            "20px",
+                            {
+                                "lineHeight": "28px",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "body-md": [
+                            "14px",
+                            {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "label-caps": [
+                            "12px",
+                            {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "700"
+                            }
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col">
+    <!-- TopAppBar -->
+    <header
+        class="bg-surface-container-lowest dark:bg-on-background w-full top-0 sticky border-b border-outline-variant dark:border-outline flat no shadows z-40">
+        <div class="flex justify-between items-center px-margin-desktop py-4 w-full max-w-container-max mx-auto">
+            <div class="flex items-center gap-2 cursor-pointer active:opacity-80">
+                <span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim"
+                    data-icon="menu">menu</span>
+            </div>
+            <!-- Branding Section: The Dual-Logo -->
+            <div
+                class="flex items-center gap-2 font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface">
+                <span class="">VioNest</span>
+                <div class="w-px h-5 bg-outline-variant"></div>
+                <span class="material-symbols-outlined text-primary" data-icon="local_fire_department"
+                    style="font-variation-settings: &quot;FILL&quot; 1;">local_fire_department</span>
+            </div>
+            <div class="cursor-pointer active:opacity-80">
+                <div class="w-8 h-8 rounded-full bg-secondary-container overflow-hidden">
+                    <img class="w-full h-full object-cover"
+                        data-alt="A professional headshot of a university student looking friendly and approachable, well-lit studio lighting against a clean, neutral background, suitable for a verified profile picture on an academic housing platform."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6FjMVW4FE5WZ-4bUMZxxChp4aJ1j8yi4_C3qlVWzLEky7d10QbKzueWny9k7CFJm_fAOpWvRLEKRg_yKkmanr1LAVtJASotFFaR-3YSiJC01-8Eh5rDtYRBuYimr22_wzjT4B9nEDreYDwaGhMBFcrJOVqde8eNba7r8fVeTIcI4V5wve6Dsukiae5QVn181Nss0uKo1LVpdk1fqRsFeTUYFAHaLKOepJ4tgNCAM5SX-grBK9K_X9H7KuzhCHY--pBlVZHiNizd_-">
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Canvas -->
+    <main class="flex-grow w-full max-w-2xl mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg pb-32">
+        <h1 class="font-display-price text-display-price mb-stack-lg text-primary">List Your Sublet</h1>
+        <form class="space-y-stack-lg">
+            <!-- Photos Section -->
+            <section>
+                <label class="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">Photos (at least 1
+                    required)</label>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-stack-sm">
+                    <!-- Upload Box -->
+                    <div
+                        class="border-2 border-dashed border-outline rounded-lg flex flex-col items-center justify-center p-stack-md h-32 cursor-pointer hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+                        <span class="material-symbols-outlined text-outline text-3xl mb-2"
+                            data-icon="photo_camera">photo_camera</span>
+                        <span class="font-label-sm text-label-sm text-outline text-center">Tap to upload photos</span>
+                    </div>
+                    <!-- Uploaded Thumbnail Placeholder -->
+                    <div class="rounded-lg overflow-hidden h-32 relative group">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A bright, clean bedroom in a modern apartment, sunlight streaming through a large window, neatly made bed with white linens, minimalist wooden desk, a potted plant adding a touch of green, high-quality real estate photography."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdNm_NxsMfrXfNZl1pvaUcSmkrIrcumKk3F6PpgmyRQx-KxdxEM1PoYwm4y6WqTC5MLd7nG2DVNqntl17ZHg2vEMkoEwTZNBrLMTXv8foVDzmpxtHQ02_3oTgPOC2lzQn-ko9ypGbitbyNxT71Cw1bwXDlg9l1RvAY9Wzobscs2uC9Cv9rVPxOl-NaMCAcQaS0Cj5qggy-eISunhY5_JiD251FRMJEdVeu509n_gcoceN3jZtGXvStAiqbxUZPhBzPsIGbUVAj_bZY">
+                        <div
+                            class="absolute inset-0 bg-on-background/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <span class="material-symbols-outlined text-on-primary" data-icon="delete">delete</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Location Section -->
+            <section class="space-y-stack-md">
+                <label class="block font-headline-sm text-headline-sm text-on-surface">Location</label>
+                <div>
+                    <select
+                        class="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT px-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none">
+                        <option value="manhattan">Manhattan</option>
+                        <option value="brooklyn">Brooklyn</option>
+                        <option value="queens">Queens</option>
+                        <option value="bronx">Bronx</option>
+                        <option value="staten_island">Staten Island</option>
+                    </select>
+                </div>
+                <div>
+                    <select
+                        class="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT px-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none text-on-surface-variant">
+                        <option disabled="" selected="" value="">Select neighborhood</option>
+                        <option value="greenwich_village">Greenwich Village</option>
+                        <option value="east_village">East Village</option>
+                        <option value="williamsburg">Williamsburg</option>
+                    </select>
+                </div>
+            </section>
+            <!-- Price Section -->
+            <section>
+                <label class="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">Monthly Rent
+                    (USD)</label>
+                <div class="relative">
+                    <span
+                        class="absolute inset-y-0 left-0 flex items-center pl-4 font-body-lg text-body-lg text-on-surface-variant">$</span>
+                    <input
+                        class="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT pl-8 pr-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                        placeholder="0" type="number">
+                </div>
+            </section>
+            <!-- Move-in Date Section -->
+            <section>
+                <label class="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">Move-in Date</label>
+                <div class="relative">
+                    <input
+                        class="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT px-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none"
+                        type="date" placeholder="mm/dd/yyyy">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                        <span class="material-symbols-outlined text-outline"
+                            data-icon="calendar_today">calendar_today</span>
+                    </span>
+                </div>
+            </section>
+            <!-- Nearest Subway Station Section -->
+            <section>
+                <label class="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">Nearest Subway
+                    Station</label>
+                <input
+                    class="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT px-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                    placeholder="e.g., 14 St–Union Sq (5 min walk)" type="text">
+            </section>
+            <!-- Number of Residents Section -->
+            <section>
+                <label class="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">Current Number of
+                    Residents (including you)</label>
+                <input
+                    class="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT px-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                    min="1" type="number">
+            </section>
+            <!-- CTA -->
+            <div class="pt-stack-md">
+                <button
+                    class="w-full bg-primary-container text-on-primary font-headline-sm text-headline-sm py-4 rounded-lg flex justify-center items-center gap-2 hover:opacity-90 transition-opacity active:scale-[0.98]"
+                    type="button">
+                    <span class="">Post Listing</span>
+                    <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                </button>
+            </div>
+        </form>
+    </main>
+    <!-- BottomNavBar (Mobile Only) -->
+    <nav
+        class="md:hidden fixed bottom-0 w-full z-50 border-t border-outline-variant dark:border-outline bg-surface dark:bg-inverse-surface shadow-sm fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe">
+        <a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-all active:scale-95 duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="font-label-sm text-label-sm mt-1">Home</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-all active:scale-95 duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="search">search</span>
+            <span class="font-label-sm text-label-sm mt-1">Search</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-all active:scale-95 duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+            <span class="font-label-sm text-label-sm mt-1">Saved</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-all active:scale-95 duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="mail">mail</span>
+            <span class="font-label-sm text-label-sm mt-1">Inbox</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-bold hover:text-primary-container transition-all active:scale-95 duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="person"
+                style="font-variation-settings: &quot;FILL&quot; 1;">person</span>
+            <span class="font-label-sm text-label-sm mt-1">Profile</span>
+        </a>
+    </nav>
+
+
+
+</body>
+
+</html>
+

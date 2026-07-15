@@ -1,0 +1,212 @@
+<!-- VioNest - Inbox (Empty State) -->
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>VioNest - Messages</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#4c4451",
+                        "surface-container": "#edeeef",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "surface-container-low": "#f3f4f5",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#f8ba7f",
+                        "tertiary-fixed": "#ffdcbf",
+                        "on-tertiary-container": "#d0965f",
+                        "primary-fixed": "#f2daff",
+                        "primary": "#39005f",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "secondary-container": "#e2dfde",
+                        "on-background": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#c985ff",
+                        "outline": "#7e7383",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#e0b6ff",
+                        "surface-tint": "#803db5",
+                        "surface-dim": "#d9dadb",
+                        "background": "#f8f9fa",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#66209b",
+                        "on-primary-fixed": "#2e004e",
+                        "inverse-surface": "#2e3132",
+                        "secondary-fixed": "#e5e2e1",
+                        "secondary": "#5f5e5e",
+                        "on-secondary-container": "#636262",
+                        "surface-container-high": "#e7e8e9",
+                        "tertiary-container": "#562f00",
+                        "on-tertiary-fixed-variant": "#673d0c",
+                        "tertiary": "#381c00",
+                        "surface": "#f8f9fa",
+                        "primary-container": "#57068c",
+                        "outline-variant": "#cfc2d3",
+                        "on-tertiary-fixed": "#2d1600",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "0.5rem",
+                        "stack-md": "1rem",
+                        "margin-desktop": "2rem",
+                        "margin-mobile": "1rem",
+                        "container-max": "1280px",
+                        "stack-lg": "2rem",
+                        "gutter": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-price": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "display-price": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface flex flex-col min-h-screen antialiased overflow-x-hidden">
+    <!-- TopAppBar -->
+    <header class="w-full top-0 sticky bg-surface dark:bg-surface-dim shadow-sm z-40 hidden md:flex">
+        <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 w-full">
+            <div class="flex items-center gap-4">
+                <button
+                    class="text-primary dark:text-primary-fixed hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined" data-icon="menu">menu</span>
+                </button>
+                <div
+                    class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed flex items-center gap-2">
+                    VioNest
+                </div>
+            </div>
+            <!-- Desktop Nav Cluster -->
+            <nav class="hidden md:flex items-center gap-6">
+                <a class="text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150 px-4 py-2 flex items-center gap-2 rounded-full"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="search">search</span>
+                    <span class="font-label-sm text-label-sm">Search</span>
+                </a>
+                <a class="text-primary dark:text-primary-fixed bg-surface-container dark:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150 px-4 py-2 flex items-center gap-2 rounded-full"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="chat_bubble"
+                        style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+                    <span class="font-label-sm text-label-sm font-bold">Messages</span>
+                </a>
+                <a class="text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150 px-4 py-2 flex items-center gap-2 rounded-full"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="person">person</span>
+                    <span class="font-label-sm text-label-sm">Profile</span>
+                </a>
+            </nav>
+            <button
+                class="hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150 rounded-full overflow-hidden w-10 h-10 border border-surface-variant flex items-center justify-center bg-surface-container-low text-secondary">
+                <span class="material-symbols-outlined" data-icon="person">person</span>
+            </button>
+        </div>
+    </header>
+    <!-- Mobile Header (Contextual) -->
+    <header
+        class="md:hidden flex justify-between items-center px-margin-mobile py-4 w-full bg-surface z-40 sticky top-0 shadow-[0_1px_0_rgba(0,0,0,0.05)]">
+        <h1 class="font-headline-md text-headline-md font-bold text-on-surface">Messages</h1>
+    </header>
+    <!-- Main Content: Empty State -->
+    <main class="flex-grow flex flex-col items-center justify-center p-6 md:p-margin-desktop mb-20 md:mb-0">
+        <div
+            class="flex flex-col items-center justify-center max-w-md text-center gap-stack-md py-12 px-6 rounded-xl bg-surface-bright border border-surface-variant/50 shadow-[0px_4px_12px_rgba(0,0,0,0.02)] transition-all duration-300">
+            <div
+                class="w-24 h-24 rounded-full bg-surface-container-low flex items-center justify-center mb-2 shadow-inner">
+                <span class="material-symbols-outlined text-[48px] text-secondary-fixed-dim"
+                    data-icon="chat_bubble_outline">chat_bubble</span>
+            </div>
+            <h2 class="font-headline-sm text-headline-sm text-on-surface">No messages yet</h2>
+            <p class="font-body-md text-body-md text-secondary">
+                Browse listings to start a conversation.
+            </p>
+            <button
+                class="mt-stack-md bg-primary-container text-on-primary font-label-sm text-label-sm px-6 py-3 rounded-full hover:bg-primary-container/90 transition-colors duration-200 active:scale-95 shadow-sm">
+                Explore Listings
+            </button>
+        </div>
+    </main>
+    <!-- BottomNavBar (Mobile Only) -->
+    <nav
+        class="md:hidden bg-surface dark:bg-surface-dim fixed bottom-0 w-full z-50 shadow-[0_-4px_16px_rgba(0,0,0,0.05)]">
+        <div class="flex justify-around items-center h-16 w-full px-4 pb-safe">
+            <a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low dark:hover:bg-surface-container-high active:scale-90 transition-transform duration-200 w-16 h-14 rounded-xl"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="search">search</span>
+                <span class="font-label-sm text-label-sm mt-1">Search</span>
+            </a>
+            <a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed font-bold hover:bg-surface-container-low dark:hover:bg-surface-container-high active:scale-90 transition-transform duration-200 w-16 h-14 rounded-xl"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="chat_bubble"
+                    style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+                <span class="font-label-sm text-label-sm mt-1">Messages</span>
+            </a>
+            <a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low dark:hover:bg-surface-container-high active:scale-90 transition-transform duration-200 w-16 h-14 rounded-xl"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="person">person</span>
+                <span class="font-label-sm text-label-sm mt-1">Profile</span>
+            </a>
+        </div>
+    </nav>
+</body>
+
+</html>
+
