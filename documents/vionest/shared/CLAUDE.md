@@ -6,7 +6,7 @@
 - **NYU logo** (torch icon + wordmark): used in auth screens and alongside the main VioNest logo
 - **StreetEasy-inspired card component pattern**: used for listing lists and detail pages
 - **Bottom navigation bar**: Search / Messages / Profile tabs
-- **NYU Verified badge**: checkmark icon in NYU Violet
+- **NYU Verified badge**: checkmark icon in green (`#008542`), not NYU Violet
 - **Match score badge**: NYU Violet background (used in search results and listing detail)
 - **2-step borough → neighborhood dropdown component**: used in both listing creation and search (see Table 4.1-1 in [listing/CLAUDE.md](../listing/CLAUDE.md) and [search/CLAUDE.md](../search/CLAUDE.md))
 

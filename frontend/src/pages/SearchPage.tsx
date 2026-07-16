@@ -1,26 +1,11 @@
-import { useState } from "react";
-
-// Table 4.1-1 — Borough -> Neighborhood mapping (PRD 4.1 / search/CLAUDE.md)
-const BOROUGH_NEIGHBORHOODS: Record<string, string[]> = {
-  Manhattan: [
-    "Greenwich Village",
-    "East Village",
-    "Lower East Side",
-    "Chelsea",
-    "Union Square/Gramercy",
-    "Upper East Side",
-    "Upper West Side",
-    "Harlem",
-    "Financial District",
-    "Other",
-  ],
-  Brooklyn: ["Williamsburg", "Bushwick", "Park Slope", "Brooklyn Heights", "Bed-Stuy", "DUMBO", "Other"],
-  Queens: ["Astoria", "Long Island City", "Flushing", "Other"],
-  Bronx: ["Other"],
-  "Staten Island": ["Other"],
-};
-
-const BOROUGHS = Object.keys(BOROUGH_NEIGHBORHOODS);
+import { useNavigate } from "react-router-dom";
+import BottomNavBar from "../components/shared/BottomNavBar";
+import BoroughNeighborhoodDropdown from "../components/shared/BoroughNeighborhoodDropdown";
+import MatchScoreBadge from "../components/shared/MatchScoreBadge";
+import NyuLogo from "../components/shared/NyuLogo";
+import NyuVerifiedBadge from "../components/shared/NyuVerifiedBadge";
+import PrimaryButton from "../components/shared/PrimaryButton";
+import { useAuth } from "../hooks/useAuth";
 
 type ListingCardData = {
   id: string;
@@ -84,16 +69,8 @@ function ListingCard({ listing }: { listing: ListingCardData }) {
     <article className="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] transition-shadow duration-200">
       <div className="relative w-full pt-[75%] bg-surface-variant">
         {/* TODO: replace with listing.photos[0] */}
-        <div className="absolute top-3 right-3 bg-nyu-violet text-on-primary font-label-caps text-label-caps px-2 py-1 rounded shadow-sm z-10 flex items-center gap-1">
-          <span className="material-symbols-outlined text-[14px] [font-variation-settings:'FILL'_1]">verified</span>
-          {listing.matchScore}% Match
-        </div>
-        {listing.nyuVerified && (
-          <div className="absolute bottom-3 left-3 bg-[#008542] text-white font-label-caps text-label-caps px-2 py-1 rounded shadow-sm z-10 flex items-center gap-1">
-            <span className="material-symbols-outlined text-[14px] [font-variation-settings:'FILL'_1]">school</span>
-            NYU Verified
-          </div>
-        )}
+        <MatchScoreBadge className="absolute top-3 right-3 z-10" score={listing.matchScore} />
+        {listing.nyuVerified && <NyuVerifiedBadge className="absolute bottom-3 left-3 z-10" />}
       </div>
       <div className="p-4 flex flex-col gap-stack-sm">
         {/* Header & Price */}
@@ -137,17 +114,34 @@ function ListingCard({ listing }: { listing: ListingCardData }) {
 }
 
 export default function SearchPage() {
-  // Local UI-only state for the 2-step borough -> neighborhood dropdown (no API wiring yet).
-  const [borough, setBorough] = useState(BOROUGHS[0]);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   return (
     <div className="bg-background text-on-background min-h-screen pb-24 md:pb-0">
+      {/* Logout — gated on `user` so it never flashes before AuthProvider's session check resolves */}
+      {user && (
+        <button
+          className="fixed bottom-20 md:bottom-4 right-4 z-50 flex items-center gap-1.5 bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1.5 shadow-sm font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
+          onClick={handleLogout}
+          type="button"
+        >
+          <span className="material-symbols-outlined text-[16px]">logout</span>
+          Log out
+        </button>
+      )}
+
       {/* TopAppBar (desktop/tablet) */}
       <header className="hidden md:flex justify-between items-center px-margin-desktop py-4 w-full max-w-container-max mx-auto bg-surface-container-lowest border-b border-outline-variant top-0 sticky z-50">
         <div className="flex items-center gap-2 font-headline-md text-headline-md font-bold text-on-surface cursor-pointer active:opacity-80">
           <span>VioNest</span>
           <div className="w-px h-5 bg-outline-variant" />
-          <span className="material-symbols-outlined text-nyu-violet text-[20px] [font-variation-settings:'FILL'_1]">local_fire_department</span>
+          <NyuLogo size={20} />
         </div>
         <nav className="flex gap-6 items-center">
           <a className="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg" href="#">
@@ -175,42 +169,12 @@ export default function SearchPage() {
         <div className="flex items-center gap-2 px-margin-mobile pt-4 pb-2">
           <span className="font-headline-md text-headline-md font-bold text-on-surface">VioNest</span>
           <div className="w-px h-5 bg-outline-variant" />
-          <span className="material-symbols-outlined text-nyu-violet text-[20px] [font-variation-settings:'FILL'_1]">local_fire_department</span>
+          <NyuLogo size={20} />
         </div>
         <div className="px-margin-mobile pb-4 flex flex-col gap-stack-sm">
           {/* Row 1: Borough & Neighborhood */}
-          <div className="flex gap-3">
-            <div className="relative flex-1">
-              {/* TODO: bind to search filter — borough */}
-              <select
-                className="w-full appearance-none bg-surface-container-lowest border border-outline-variant text-on-surface font-body-md text-body-md rounded-lg pl-3 pr-8 py-2.5 focus:outline-none focus:border-nyu-violet focus:ring-1 focus:ring-nyu-violet"
-                onChange={(e) => setBorough(e.target.value)}
-                value={borough}
-              >
-                {BOROUGHS.map((b) => (
-                  <option key={b} value={b}>
-                    {b}
-                  </option>
-                ))}
-              </select>
-              <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">
-                expand_more
-              </span>
-            </div>
-            <div className="relative flex-1">
-              {/* TODO: bind to search filter — neighborhood (options depend on selected borough) */}
-              <select className="w-full appearance-none bg-surface-container-lowest border border-outline-variant text-on-surface font-body-md text-body-md rounded-lg pl-3 pr-8 py-2.5 focus:outline-none focus:border-nyu-violet focus:ring-1 focus:ring-nyu-violet">
-                {BOROUGH_NEIGHBORHOODS[borough].map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </select>
-              <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">
-                expand_more
-              </span>
-            </div>
-          </div>
+          {/* TODO: bind onChange -> search filter (borough / neighborhood) */}
+          <BoroughNeighborhoodDropdown variant="default" />
           {/* Row 2: Min & Max Price */}
           <div className="flex gap-3">
             <div className="relative flex-1">
@@ -234,10 +198,10 @@ export default function SearchPage() {
           </div>
           {/* Row 3: Search Button */}
           {/* TODO: wire onClick -> GET /api/listings?borough=&neighborhood=&minPrice=&maxPrice= */}
-          <button className="w-full bg-nyu-violet text-on-primary font-headline-sm text-headline-sm py-3 rounded-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-transform" type="button">
+          <PrimaryButton>
             <span className="material-symbols-outlined text-[20px]">search</span>
             Search
-          </button>
+          </PrimaryButton>
         </div>
       </div>
 
@@ -264,28 +228,7 @@ export default function SearchPage() {
       </main>
 
       {/* BottomNavBar (Mobile Only) */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface border-t border-outline-variant shadow-sm z-50">
-        <a className="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-nyu-violet transition-all active:scale-95 duration-150 w-16 h-12" href="#">
-          <span className="material-symbols-outlined mb-1 text-[24px]">home</span>
-          <span className="truncate">Home</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-primary font-bold font-label-sm text-label-sm hover:text-nyu-violet transition-all active:scale-95 duration-150 w-16 h-12" href="#">
-          <span className="material-symbols-outlined mb-1 text-[24px] [font-variation-settings:'FILL'_1]">search</span>
-          <span className="truncate">Search</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-nyu-violet transition-all active:scale-95 duration-150 w-16 h-12" href="#">
-          <span className="material-symbols-outlined mb-1 text-[24px]">bookmark</span>
-          <span className="truncate">Saved</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-nyu-violet transition-all active:scale-95 duration-150 w-16 h-12" href="#">
-          <span className="material-symbols-outlined mb-1 text-[24px]">mail</span>
-          <span className="truncate">Inbox</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-secondary font-label-sm text-label-sm hover:text-nyu-violet transition-all active:scale-95 duration-150 w-16 h-12" href="#">
-          <span className="material-symbols-outlined mb-1 text-[24px]">person</span>
-          <span className="truncate">Profile</span>
-        </a>
-      </nav>
+      <BottomNavBar active="search" />
     </div>
   );
 }

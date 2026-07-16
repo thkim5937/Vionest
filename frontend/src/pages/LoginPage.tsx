@@ -1,6 +1,34 @@
+import { FormEvent, useState } from "react";
+import { isAxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 import nyuLogo from "../assets/nyu-logo.png";
+import { useAuth } from "../hooks/useAuth";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setIsSubmitting(true);
+    setError(null);
+    try {
+      const loggedInUser = await login(email, password);
+      navigate(loggedInUser.hasProfile ? "/search" : "/profile/setup");
+    } catch (err) {
+      const message = isAxiosError<{ error?: string }>(err) ? err.response?.data?.error : undefined;
+      setError(message ?? "Invalid email or password.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="bg-background min-h-screen flex items-center justify-center font-sans antialiased">
       {/* Login Container */}
@@ -16,7 +44,7 @@ export default function LoginPage() {
           <h1 className="font-headline-md text-headline-md text-on-surface mb-stack-lg text-center w-full">Welcome Back</h1>
 
           {/* Form */}
-          <form className="w-full flex flex-col gap-stack-md">
+          <form className="w-full flex flex-col gap-stack-md" onSubmit={handleSubmit}>
             {/* Email Input */}
             <div className="flex flex-col gap-1">
               <label className="font-label-sm text-label-sm text-on-surface-variant" htmlFor="email">
@@ -28,9 +56,11 @@ export default function LoginPage() {
                   className="w-full pl-10 pr-4 py-2 bg-surface border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow"
                   id="email"
                   name="email"
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="NetID@nyu.edu"
                   required
                   type="email"
+                  value={email}
                 />
               </div>
             </div>
@@ -51,9 +81,11 @@ export default function LoginPage() {
                   className="w-full pl-10 pr-10 py-2 bg-surface border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow"
                   id="password"
                   name="password"
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
                   type="password"
+                  value={password}
                 />
                 {/* TODO: wire show/hide password toggle */}
                 <button className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" type="button">
@@ -62,12 +94,15 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {error && <p className="font-label-sm text-label-sm text-error">{error}</p>}
+
             {/* Submit Button */}
             <button
-              className="mt-stack-sm w-full bg-nyu-violet text-on-primary py-3 px-4 rounded-lg font-headline-sm text-headline-sm hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center gap-2"
+              className="mt-stack-sm w-full bg-nyu-violet text-on-primary py-3 px-4 rounded-lg font-headline-sm text-headline-sm hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isSubmitting}
               type="submit"
             >
-              Log In
+              {isSubmitting ? "Logging in..." : "Log In"}
               <span className="material-symbols-outlined">arrow_forward</span>
             </button>
           </form>

@@ -1,3 +1,5 @@
+import NyuVerifiedBadge from "../components/shared/NyuVerifiedBadge";
+
 export default function ChatPage() {
   return (
     <div className="bg-background text-on-background h-screen flex flex-col font-body-md text-body-md overflow-hidden">
@@ -10,10 +12,7 @@ export default function ChatPage() {
           {/* TODO: bind to conversation partner name + NYU-verified status */}
           <h1 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
             David
-            <span className="inline-flex items-center gap-1 bg-[#008542]/10 border border-[#008542]/30 px-2 py-0.5 rounded-full text-[#008542] font-label-sm text-label-sm">
-              <span className="material-symbols-outlined text-[14px]">verified</span>
-              NYU Verified
-            </span>
+            <NyuVerifiedBadge />
           </h1>
           {/* TODO: bind to conversation's listing name */}
           <p className="text-secondary font-label-sm text-label-sm">Gramercy Green</p>

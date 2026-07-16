@@ -1,16 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import NyuLogo from "../shared/NyuLogo";
+import { useSsoMockFlow } from "../../hooks/useSsoMockFlow";
 
-type AuthPhase = "waiting" | "success";
+interface SsoLocationState {
+  email?: string;
+}
 
 export default function SsoMockStep3DuoPush() {
-  const [phase, setPhase] = useState<AuthPhase>("waiting");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const email = (location.state as SsoLocationState | null)?.email ?? "";
+  const { step, advanceToStep3 } = useSsoMockFlow();
 
-  // Spinner starts on mount (no send button) and auto-completes after ~4s, per PRD 4.1 / TRD 5.
-  // Cancellable via the cleanup function, per TRD 5 technical notes.
+  // Enter step3 on mount, which starts useSsoMockFlow's cancellable 3-5s timer.
   useEffect(() => {
-    const timer = setTimeout(() => setPhase("success"), 4000);
-    return () => clearTimeout(timer);
-  }, []);
+    advanceToStep3();
+  }, [advanceToStep3]);
+
+  // On completion, hand the email back to the signup screen marked verified.
+  useEffect(() => {
+    if (step === "verified") {
+      navigate("/signup", { state: { email, verified: true } });
+    }
+  }, [step, email, navigate]);
+
+  const isVerified = step === "verified";
 
   return (
     <div className="bg-nyu-violet min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-margin-mobile md:px-margin-desktop font-body-lg text-body-lg text-on-surface">
@@ -21,10 +36,7 @@ export default function SsoMockStep3DuoPush() {
       <main className="bg-surface-container-lowest w-full max-w-[420px] rounded-xl border border-secondary-container shadow-sm relative z-10 flex flex-col pt-stack-lg pb-stack-lg px-stack-lg md:px-8">
         {/* Header / Logo */}
         <header className="flex items-center gap-2 mb-stack-lg w-full">
-          <span className="material-symbols-outlined text-nyu-violet text-[28px] [font-variation-settings:'FILL'_1]">
-            local_fire_department
-          </span>
-          <span className="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">NYU</span>
+          <NyuLogo size={28} />
           <div className="h-6 w-px bg-outline-variant mx-1" />
           <span className="font-label-caps text-label-caps text-on-surface-variant">SSO Login</span>
         </header>
@@ -40,7 +52,7 @@ export default function SsoMockStep3DuoPush() {
 
           {/* Illustration & Animation State Container */}
           <div className="flex flex-col items-center w-full min-h-[220px]">
-            {phase === "waiting" && (
+            {!isVerified && (
               <div className="flex flex-col items-center w-full transition-opacity duration-300">
                 {/* Phone Illustration */}
                 <div className="relative w-20 h-40 border-4 border-outline rounded-xl mb-stack-md flex flex-col items-center pt-3 px-1 bg-surface-container-lowest overflow-hidden shadow-sm animate-pulse-glow">
@@ -74,7 +86,7 @@ export default function SsoMockStep3DuoPush() {
               </div>
             )}
 
-            {phase === "success" && (
+            {isVerified && (
               <div className="flex flex-col items-center justify-center h-full w-full opacity-100 transition-opacity duration-500 pt-stack-md">
                 <div className="w-16 h-16 bg-[#008542] rounded-full flex items-center justify-center mb-stack-md shadow-sm">
                   <span className="material-symbols-outlined text-on-primary text-[32px] [font-variation-settings:'FILL'_1]">
@@ -82,7 +94,6 @@ export default function SsoMockStep3DuoPush() {
                   </span>
                 </div>
                 <h2 className="font-headline-sm text-headline-sm text-on-surface mb-1">Success</h2>
-                {/* TODO: wire to useSsoMockFlow — on success, advance to signup screen with isVerified = true */}
                 <p className="font-body-md text-body-md text-on-surface-variant">Logging you in...</p>
               </div>
             )}

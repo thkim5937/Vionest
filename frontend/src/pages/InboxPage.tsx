@@ -1,3 +1,5 @@
+import BottomNavBar from "../components/shared/BottomNavBar";
+
 type ConversationPreview = {
   id: string;
   partnerName: string;
@@ -78,28 +80,8 @@ export default function InboxPage() {
       </main>
 
       {/* BottomNavBar (Mobile Only) */}
-      <nav className="md:hidden fixed bottom-0 w-full z-50 bg-surface border-t border-surface-variant shadow-[0_-4px_12px_rgba(0,0,0,0.02)]">
-        <div className="flex justify-around items-center h-16 w-full px-4 pb-safe">
-          {/* Search (Inactive) */}
-          <div className="flex flex-col items-center justify-center text-secondary hover:bg-surface-container-low active:scale-90 transition-transform duration-200 cursor-pointer w-16 h-full rounded-lg">
-            <span className="material-symbols-outlined mb-1">search</span>
-            <span className="font-label-sm text-label-sm">Search</span>
-          </div>
-          {/* Messages (Active) */}
-          <div className="flex flex-col items-center justify-center text-primary font-bold active:scale-90 transition-transform duration-200 cursor-pointer w-16 h-full rounded-lg relative">
-            {/* Badge for unread total */}
-            {/* TODO: only render when there is at least one unread conversation */}
-            <div className="absolute top-1 right-2 w-2 h-2 bg-nyu-violet rounded-full" />
-            <span className="material-symbols-outlined mb-1 [font-variation-settings:'FILL'_1]">chat_bubble</span>
-            <span className="font-label-sm text-label-sm">Messages</span>
-          </div>
-          {/* Profile (Inactive) */}
-          <div className="flex flex-col items-center justify-center text-secondary hover:bg-surface-container-low active:scale-90 transition-transform duration-200 cursor-pointer w-16 h-full rounded-lg">
-            <span className="material-symbols-outlined mb-1">person</span>
-            <span className="font-label-sm text-label-sm">Profile</span>
-          </div>
-        </div>
-      </nav>
+      {/* TODO: only pass hasUnreadMessages when there is at least one unread conversation */}
+      <BottomNavBar active="messages" hasUnreadMessages />
     </div>
   );
 }

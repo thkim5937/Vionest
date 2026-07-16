@@ -1,3 +1,7 @@
+import MatchScoreBadge from "../components/shared/MatchScoreBadge";
+import NyuVerifiedBadge from "../components/shared/NyuVerifiedBadge";
+import PrimaryButton from "../components/shared/PrimaryButton";
+
 export default function ListingDetailPage() {
   return (
     <div className="bg-background text-on-background font-body-md min-h-screen flex flex-col pb-24 md:pb-0">
@@ -45,10 +49,7 @@ export default function ListingDetailPage() {
                 <p className="font-body-md text-on-surface-variant">310 3rd Ave, New York, NY 10010</p>
               </div>
               {/* TODO: replace with computed matchScore (search/CLAUDE.md match-score algorithm) */}
-              <div className="bg-nyu-violet text-on-primary font-label-sm text-label-sm px-2 py-1 rounded flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">bolt</span>
-                92% Match
-              </div>
+              <MatchScoreBadge score={92} />
             </div>
             <div className="flex items-center gap-2 text-on-surface-variant font-body-md mt-2">
               <span className="material-symbols-outlined text-[18px]">subway</span>
@@ -107,10 +108,7 @@ export default function ListingDetailPage() {
               <div>
                 {/* TODO: bind to poster name */}
                 <div className="font-headline-sm text-headline-sm text-on-surface">David</div>
-                <div className="flex items-center gap-1 text-[#008542] font-label-sm mt-1">
-                  <span className="material-symbols-outlined text-[16px]">verified</span>
-                  <span>NYU Verified</span>
-                </div>
+                <NyuVerifiedBadge className="mt-1" />
               </div>
             </div>
             {/* TODO: bind to poster's Profile fields (gender, bedTimeBlock, wakeTimeBlock, smoking, cooking, pets, guestFrequency) */}
@@ -130,10 +128,10 @@ export default function ListingDetailPage() {
       {/* Fixed Bottom Bar */}
       <div className="fixed bottom-0 w-full bg-surface-container-lowest border-t border-outline-variant p-4 z-40 md:relative md:border-none md:p-6 md:max-w-3xl md:mx-auto md:bg-transparent">
         {/* TODO: wire onClick -> POST /api/conversations (create/find conversation from this listing) */}
-        <button className="w-full bg-nyu-violet text-on-primary font-headline-sm text-headline-sm py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-colors active:scale-[0.98]" type="button">
+        <PrimaryButton>
           <span className="material-symbols-outlined">mail</span>
           Send Message
-        </button>
+        </PrimaryButton>
       </div>
     </div>
   );

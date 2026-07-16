@@ -1,30 +1,62 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import BottomNavBar from "../components/shared/BottomNavBar";
+import BoroughNeighborhoodDropdown from "../components/shared/BoroughNeighborhoodDropdown";
+import NyuLogo from "../components/shared/NyuLogo";
+import PrimaryButton from "../components/shared/PrimaryButton";
 
-// Table 4.1-1 — Borough -> Neighborhood mapping (PRD 4.1 / listing/CLAUDE.md)
-const BOROUGH_NEIGHBORHOODS: Record<string, string[]> = {
-  Manhattan: [
-    "Greenwich Village",
-    "East Village",
-    "Lower East Side",
-    "Chelsea",
-    "Union Square/Gramercy",
-    "Upper East Side",
-    "Upper West Side",
-    "Harlem",
-    "Financial District",
-    "Other",
-  ],
-  Brooklyn: ["Williamsburg", "Bushwick", "Park Slope", "Brooklyn Heights", "Bed-Stuy", "DUMBO", "Other"],
-  Queens: ["Astoria", "Long Island City", "Flushing", "Other"],
-  Bronx: ["Other"],
-  "Staten Island": ["Other"],
-};
+// Auto-inserts "." separators as the user types digits: "260901" -> "26.09.01".
+function formatMoveInDateInput(raw: string): string {
+  const digits = raw.replace(/\D/g, "").slice(0, 6);
+  return [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 6)].filter(Boolean).join(".");
+}
 
-const BOROUGHS = Object.keys(BOROUGH_NEIGHBORHOODS);
+// yy.mm.dd -> ISO YYYY-MM-DD, or null if it isn't a real calendar date.
+// Two-digit years are treated as 2000 + yy since sublets are always near-future.
+function parseMoveInDateInput(value: string): string | null {
+  const match = /^(\d{2})\.(\d{2})\.(\d{2})$/.exec(value);
+  if (!match) return null;
+
+  const [, yy, mm, dd] = match;
+  const year = 2000 + Number(yy);
+  const month = Number(mm);
+  const day = Number(dd);
+
+  const date = new Date(Date.UTC(year, month - 1, day));
+  const isRealDate = date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+
+  return isRealDate ? `${year}-${mm}-${dd}` : null;
+}
 
 export default function ListingCreatePage() {
-  // Local UI-only state for the 2-step borough -> neighborhood dropdown (no API/form wiring yet).
-  const [borough, setBorough] = useState(BOROUGHS[0]);
+  const [moveInDateText, setMoveInDateText] = useState("");
+  const [moveInDateError, setMoveInDateError] = useState<string | null>(null);
+
+  // Ready to send once POST /api/listings is wired up.
+  const moveInDateIso = parseMoveInDateInput(moveInDateText);
+
+  const validateMoveInDate = () => {
+    if (!moveInDateText) {
+      setMoveInDateError("Move-in date is required.");
+      return false;
+    }
+    if (!moveInDateIso) {
+      setMoveInDateError("Enter a valid date in yy.mm.dd format.");
+      return false;
+    }
+    setMoveInDateError(null);
+    return true;
+  };
+
+  const handleMoveInDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setMoveInDateText(formatMoveInDateInput(e.target.value));
+    setMoveInDateError(null);
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!validateMoveInDate()) return;
+    // TODO: wire onSubmit -> POST /api/listings (multipart, requires auth + profile completed)
+  };
 
   return (
     <div className="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col">
@@ -38,7 +70,7 @@ export default function ListingCreatePage() {
           <div className="flex items-center gap-2 font-headline-md text-headline-md font-bold text-on-surface">
             <span>VioNest</span>
             <div className="w-px h-5 bg-outline-variant" />
-            <span className="material-symbols-outlined text-primary [font-variation-settings:'FILL'_1]">local_fire_department</span>
+            <NyuLogo />
           </div>
           <div className="cursor-pointer active:opacity-80">
             {/* TODO: replace with current user's avatar image */}
@@ -49,8 +81,8 @@ export default function ListingCreatePage() {
 
       {/* Main Canvas */}
       <main className="flex-grow w-full max-w-2xl mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg pb-32">
-        <h1 className="font-display-price text-display-price mb-stack-lg text-primary">List Your Sublet</h1>
-        <form className="space-y-stack-lg">
+        <h1 className="font-display-price text-display-price mb-stack-lg text-primary">Post Your Sublet</h1>
+        <form className="space-y-stack-lg" onSubmit={handleSubmit}>
           {/* Photos Section */}
           <section>
             <label className="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">Photos (at least 1 required)</label>
@@ -72,33 +104,8 @@ export default function ListingCreatePage() {
           </section>
 
           {/* Location Section */}
-          <section className="space-y-stack-md">
-            <label className="block font-headline-sm text-headline-sm text-on-surface">Location</label>
-            <div>
-              {/* TODO: bind to Listing.borough */}
-              <select
-                className="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT px-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none"
-                onChange={(e) => setBorough(e.target.value)}
-                value={borough}
-              >
-                {BOROUGHS.map((b) => (
-                  <option key={b} value={b}>
-                    {b}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              {/* TODO: bind to Listing.neighborhood (options depend on selected borough, Table 4.1-1) */}
-              <select className="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT px-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none text-on-surface-variant">
-                {BOROUGH_NEIGHBORHOODS[borough].map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </section>
+          {/* TODO: bind onChange -> Listing.borough / Listing.neighborhood */}
+          <BoroughNeighborhoodDropdown variant="labeled" />
 
           {/* Price Section */}
           <section>
@@ -116,17 +123,30 @@ export default function ListingCreatePage() {
 
           {/* Move-in Date Section */}
           <section>
-            <label className="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">Move-in Date</label>
+            <label className="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface" htmlFor="moveInDate">
+              Move-in Date
+            </label>
             <div className="relative">
-              {/* TODO: bind to Listing.moveInDate */}
               <input
-                className="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT px-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none"
-                type="date"
+                aria-invalid={moveInDateError ? true : undefined}
+                className={`w-full bg-surface-container-lowest border rounded-DEFAULT px-4 py-3 pr-12 font-body-lg text-body-lg text-on-surface focus:outline-none focus:ring-1 ${
+                  moveInDateError ? "border-error focus:border-error focus:ring-error" : "border-outline focus:border-primary focus:ring-primary"
+                }`}
+                id="moveInDate"
+                inputMode="numeric"
+                lang="en"
+                maxLength={8}
+                onBlur={validateMoveInDate}
+                onChange={handleMoveInDateChange}
+                placeholder="yy.mm.dd"
+                type="text"
+                value={moveInDateText}
               />
               <span className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
                 <span className="material-symbols-outlined text-outline">calendar_today</span>
               </span>
             </div>
+            {moveInDateError && <p className="mt-1 font-label-sm text-label-sm text-error">{moveInDateError}</p>}
           </section>
 
           {/* Nearest Subway Station Section */}
@@ -155,41 +175,16 @@ export default function ListingCreatePage() {
 
           {/* CTA */}
           <div className="pt-stack-md">
-            {/* TODO: wire onClick -> POST /api/listings (multipart, requires auth + profile completed) */}
-            <button
-              className="w-full bg-nyu-violet text-on-primary font-headline-sm text-headline-sm py-4 rounded-lg flex justify-center items-center gap-2 hover:opacity-90 transition-opacity active:scale-[0.98]"
-              type="button"
-            >
+            <PrimaryButton type="submit">
               <span>Post Listing</span>
               <span className="material-symbols-outlined">check_circle</span>
-            </button>
+            </PrimaryButton>
           </div>
         </form>
       </main>
 
       {/* BottomNavBar (Mobile Only) */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full z-50 border-t border-outline-variant bg-surface shadow-sm flex justify-around items-center px-4 py-2 pb-safe">
-        <a className="flex flex-col items-center justify-center text-secondary hover:text-nyu-violet transition-all active:scale-95 duration-150" href="#">
-          <span className="material-symbols-outlined">home</span>
-          <span className="font-label-sm text-label-sm mt-1">Home</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-secondary hover:text-nyu-violet transition-all active:scale-95 duration-150" href="#">
-          <span className="material-symbols-outlined">search</span>
-          <span className="font-label-sm text-label-sm mt-1">Search</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-secondary hover:text-nyu-violet transition-all active:scale-95 duration-150" href="#">
-          <span className="material-symbols-outlined">bookmark</span>
-          <span className="font-label-sm text-label-sm mt-1">Saved</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-secondary hover:text-nyu-violet transition-all active:scale-95 duration-150" href="#">
-          <span className="material-symbols-outlined">mail</span>
-          <span className="font-label-sm text-label-sm mt-1">Inbox</span>
-        </a>
-        <a className="flex flex-col items-center justify-center text-primary font-bold hover:text-nyu-violet transition-all active:scale-95 duration-150" href="#">
-          <span className="material-symbols-outlined [font-variation-settings:'FILL'_1]">person</span>
-          <span className="font-label-sm text-label-sm mt-1">Profile</span>
-        </a>
-      </nav>
+      <BottomNavBar active="profile" />
     </div>
   );
 }

@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum GuestFrequency {
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  RARE
+}
+
+enum Borough {
+  Manhattan
+  Brooklyn
+  Queens
+  Bronx
+  StatenIsland
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  isVerified   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  profile               Profile?
+  listings              Listing[]
+  searcherConversations Conversation[] @relation("ConversationSearcher")
+  posterConversations   Conversation[] @relation("ConversationPoster")
+  messages              Message[]
+}
+
+model Profile {
+  id             String         @id @default(uuid())
+  userId         String         @unique
+  gender         Gender
+  bedTimeBlock   Int
+  wakeTimeBlock  Int
+  smoking        Boolean
+  cooking        Boolean
+  pets           Boolean
+  guestFrequency GuestFrequency
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Listing {
+  id             String   @id @default(uuid())
+  posterId       String
+  // JSON-encoded string[] — SQLite has no native array type, so this is stored as a
+  // JSON string and JSON.parse/JSON.stringify'd in application code (min. 1 photo).
+  photos         String
+  borough        Borough
+  neighborhood   String
+  price          Int
+  moveInDate     DateTime
+  nearestStation String
+  residentCount  Int
+  createdAt      DateTime @default(now())
+
+  poster        User           @relation(fields: [posterId], references: [id])
+  conversations Conversation[]
+}
+
+model Conversation {
+  id         String   @id @default(uuid())
+  listingId  String
+  searcherId String
+  posterId   String
+  createdAt  DateTime @default(now())
+
+  listing         Listing          @relation(fields: [listingId], references: [id])
+  searcher        User             @relation("ConversationSearcher", fields: [searcherId], references: [id])
+  poster          User             @relation("ConversationPoster", fields: [posterId], references: [id])
+  messages        Message[]
+  paymentRequests PaymentRequest[]
+}
+
+model Message {
+  id             String   @id @default(uuid())
+  conversationId String
+  senderId       String
+  content        String
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+  sender       User         @relation(fields: [senderId], references: [id])
+}
+
+model PaymentRequest {
+  id             String        @id @default(uuid())
+  conversationId String
+  amount         Int
+  status         PaymentStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+}

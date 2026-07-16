@@ -1,9 +1,20 @@
+import { useLocation, useNavigate } from "react-router-dom";
+import NyuLogo from "../shared/NyuLogo";
+
+interface SsoLocationState {
+  email?: string;
+}
+
 /**
  * No Stitch source file exists for this screen (see documents/vionest/ui/ split summary).
  * Built from PRD 4.1 / TRD 5 description, matching the card + watermark visual
  * language established in SsoMockStep2Password.tsx and SsoMockStep3DuoPush.tsx.
  */
 export default function SsoMockStep1Identity() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const email = (location.state as SsoLocationState | null)?.email ?? "";
+
   return (
     <div className="bg-nyu-violet min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-margin-mobile md:px-margin-desktop font-body-lg text-body-lg text-on-surface">
       {/* Background Watermark */}
@@ -13,19 +24,13 @@ export default function SsoMockStep1Identity() {
       <main className="bg-surface-container-lowest w-full max-w-[440px] rounded-xl border border-secondary-container shadow-sm relative z-10 flex flex-col pt-stack-lg pb-stack-lg px-stack-lg md:px-8">
         {/* Header / Logo */}
         <header className="flex items-center gap-2 mb-stack-lg w-full">
-          <span className="material-symbols-outlined text-nyu-violet text-[28px] [font-variation-settings:'FILL'_1]">
-            local_fire_department
-          </span>
-          <span className="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">NYU</span>
+          <NyuLogo size={28} />
           <div className="h-6 w-px bg-outline-variant mx-1" />
           <span className="font-label-caps text-label-caps text-on-surface-variant">SSO Login</span>
         </header>
 
         {/* Entered Email */}
-        <p className="font-body-md text-body-md text-on-surface-variant mb-stack-sm w-full">
-          {/* TODO: replace with signup form email value (NetID@nyu.edu) */}
-          tk2846@nyu.edu
-        </p>
+        <p className="font-body-md text-body-md text-on-surface-variant mb-stack-sm w-full">{email}</p>
 
         {/* Heading */}
         <h1 className="font-headline-md text-headline-md text-on-surface mb-stack-sm w-full">Confirm your identity</h1>
@@ -36,9 +41,9 @@ export default function SsoMockStep1Identity() {
         </p>
 
         {/* Continue Affordance */}
-        {/* TODO: wire to useSsoMockFlow — advances step1 -> step2 (auto-advance is also acceptable per TRD 5) */}
         <button
           className="w-full bg-nyu-violet text-on-primary py-3 rounded-lg font-headline-sm text-headline-sm hover:opacity-90 transition-opacity mb-stack-lg"
+          onClick={() => navigate("/sso/step2", { state: { email } })}
           type="button"
         >
           Continue
