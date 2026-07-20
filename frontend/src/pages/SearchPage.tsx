@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { isAxiosError } from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useNavigationType } from "react-router-dom";
 import BottomNavBar from "../components/shared/BottomNavBar";
 import ListingCard from "../components/shared/ListingCard";
 import NyuLogo from "../components/shared/NyuLogo";
@@ -21,8 +21,19 @@ const BOROUGH_ENUM_VALUES: Record<string, string> = {
 
 const EMPTY_REGION_SELECTION: RegionSelection = { boroughs: [], neighborhoods: [] };
 
+const SEARCH_STATE_STORAGE_KEY = "vionest_search_state";
+
+interface StoredSearchState {
+  region: RegionSelection;
+  minPrice: string;
+  maxPrice: string;
+  listings: ListingSearchResult[];
+}
+
 export default function SearchPage() {
   const navigate = useNavigate();
+  const navigationType = useNavigationType();
+  const location = useLocation();
 
   const [region, setRegion] = useState<RegionSelection>(EMPTY_REGION_SELECTION);
   const [minPrice, setMinPrice] = useState("");
@@ -30,6 +41,7 @@ export default function SearchPage() {
   const [listings, setListings] = useState<ListingSearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const runSearch = useCallback(async () => {
     setIsLoading(true);
@@ -42,6 +54,9 @@ export default function SearchPage() {
         maxPrice: maxPrice !== "" ? Number(maxPrice) : undefined,
       });
       setListings(results);
+      setHasSearched(true);
+      const stateToStore: StoredSearchState = { region, minPrice, maxPrice, listings: results };
+      sessionStorage.setItem(SEARCH_STATE_STORAGE_KEY, JSON.stringify(stateToStore));
     } catch (err) {
       const message = isAxiosError<{ error?: string }>(err) ? err.response?.data?.error : undefined;
       setError(message ?? "Could not load listings. Please try again.");
@@ -51,9 +66,33 @@ export default function SearchPage() {
   }, [region, minPrice, maxPrice]);
 
   useEffect(() => {
-    runSearch();
+    if (navigationType === "POP") {
+      const saved = sessionStorage.getItem(SEARCH_STATE_STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved) as StoredSearchState;
+          setRegion(parsed.region);
+          setMinPrice(parsed.minPrice);
+          setMaxPrice(parsed.maxPrice);
+          setListings(parsed.listings);
+          setHasSearched(true);
+          setError(null);
+          setIsLoading(false);
+          return;
+        } catch {
+          // fall through to empty state below on malformed saved state
+        }
+      }
+    }
+    setRegion(EMPTY_REGION_SELECTION);
+    setMinPrice("");
+    setMaxPrice("");
+    setListings([]);
+    setHasSearched(false);
+    setError(null);
+    setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.key]);
 
   return (
     <div className="bg-background text-on-background min-h-screen pb-24 md:pb-0">
@@ -198,10 +237,15 @@ export default function SearchPage() {
           <div className="flex justify-center py-12">
             <div className="w-8 h-8 rounded-full border-2 border-outline-variant border-t-nyu-violet animate-spin" />
           </div>
+        ) : listings.length === 0 && !error && !hasSearched ? (
+          <div className="flex flex-col items-center gap-2 py-12 text-center">
+            <span className="material-symbols-outlined text-4xl text-on-surface-variant">tune</span>
+            <p className="font-body-md text-body-md text-on-surface-variant">Select filters and press Search to find listings.</p>
+          </div>
         ) : listings.length === 0 && !error ? (
           <div className="flex flex-col items-center gap-2 py-12 text-center">
             <span className="material-symbols-outlined text-4xl text-on-surface-variant">search_off</span>
-            <p className="font-body-md text-body-md text-on-surface-variant">No listings match your search. Try adjusting your filters.</p>
+            <p className="font-body-md text-body-md text-on-surface-variant">No listings match your filters. Try adjusting your search.</p>
           </div>
         ) : (
           listings.map((listing) => <ListingCard key={listing.id} listing={listing} />)

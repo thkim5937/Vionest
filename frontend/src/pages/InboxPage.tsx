@@ -132,7 +132,11 @@ export default function InboxPage() {
       {/* TopAppBar (Mobile) */}
       <header className="w-full top-0 sticky bg-surface z-50 md:hidden">
         <div className="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 w-full">
-          <div className="w-8" />
+          <div className="flex items-center gap-2">
+            <span className="font-headline-md text-headline-md font-bold text-on-surface">VioNest</span>
+            <div className="w-px h-5 bg-outline-variant" />
+            <NyuLogo size={20} />
+          </div>
           <div className="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">Messages</div>
           <ProfileMenuButton />
         </div>

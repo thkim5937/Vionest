@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { isAxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ForgotPasswordModal from "../components/auth/ForgotPasswordModal";
 import nyuLogo from "../assets/nyu-logo.png";
 import { useAuth } from "../hooks/useAuth";
 
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,9 +73,13 @@ export default function LoginPage() {
                 <label className="font-label-sm text-label-sm text-on-surface-variant" htmlFor="password">
                   Password
                 </label>
-                <a className="font-label-sm text-label-sm text-primary hover:underline" href="#">
+                <button
+                  className="font-label-sm text-label-sm text-primary hover:underline"
+                  onClick={() => setShowForgotPassword(true)}
+                  type="button"
+                >
                   Forgot password?
-                </a>
+                </button>
               </div>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
@@ -110,9 +116,9 @@ export default function LoginPage() {
           {/* Sign Up Link */}
           <p className="mt-stack-lg font-body-md text-body-md text-on-surface-variant text-center">
             Don't have an account?{" "}
-            <a className="text-primary font-semibold hover:underline" href="#">
+            <Link className="text-primary font-semibold hover:underline" to="/signup">
               Sign up
-            </a>
+            </Link>
           </p>
 
           {/* Security Badge */}
@@ -122,6 +128,8 @@ export default function LoginPage() {
           </div>
         </div>
       </main>
+
+      {showForgotPassword && <ForgotPasswordModal onClose={() => setShowForgotPassword(false)} />}
     </div>
   );
 }
