@@ -27,3 +27,8 @@ export async function createProfile(data: ProfileInput): Promise<Profile> {
   const { data: profile } = await client.post<Profile>("/api/profile", data);
   return profile;
 }
+
+export async function getProfile(): Promise<Profile> {
+  const { data: profile } = await client.get<Profile>("/api/profile/me");
+  return profile;
+}

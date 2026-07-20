@@ -1,8 +1,12 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { isAxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 import BottomNavBar from "../components/shared/BottomNavBar";
-import BoroughNeighborhoodDropdown from "../components/shared/BoroughNeighborhoodDropdown";
+import BoroughNeighborhoodDropdown, { BOROUGH_NEIGHBORHOODS, BOROUGHS } from "../components/shared/BoroughNeighborhoodDropdown";
 import NyuLogo from "../components/shared/NyuLogo";
 import PrimaryButton from "../components/shared/PrimaryButton";
+import ProfileMenuButton from "../components/shared/ProfileMenuButton";
+import { createListing } from "../api/listings";
 
 // Auto-inserts "." separators as the user types digits: "260901" -> "26.09.01".
 function formatMoveInDateInput(raw: string): string {
@@ -27,12 +31,51 @@ function parseMoveInDateInput(value: string): string | null {
   return isRealDate ? `${year}-${mm}-${dd}` : null;
 }
 
+// The dropdown's "Staten Island" display label doesn't match the Borough enum's
+// StatenIsland value (no space) — translate before sending to the backend.
+const BOROUGH_ENUM_VALUES: Record<string, string> = {
+  Manhattan: "Manhattan",
+  Brooklyn: "Brooklyn",
+  Queens: "Queens",
+  Bronx: "Bronx",
+  "Staten Island": "StatenIsland",
+};
+
+interface PhotoEntry {
+  file: File;
+  url: string;
+}
+
 export default function ListingCreatePage() {
+  const navigate = useNavigate();
+
+  const [photoEntries, setPhotoEntries] = useState<PhotoEntry[]>([]);
+  const [location, setLocation] = useState({ borough: BOROUGHS[0], neighborhood: BOROUGH_NEIGHBORHOODS[BOROUGHS[0]][0] });
+  const [price, setPrice] = useState("");
   const [moveInDateText, setMoveInDateText] = useState("");
   const [moveInDateError, setMoveInDateError] = useState<string | null>(null);
+  const [nearestStation, setNearestStation] = useState("");
+  const [residentCount, setResidentCount] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Ready to send once POST /api/listings is wired up.
+  const photoEntriesRef = useRef(photoEntries);
+  photoEntriesRef.current = photoEntries;
+
   const moveInDateIso = parseMoveInDateInput(moveInDateText);
+
+  const priceNum = Number(price);
+  const residentCountNum = Number(residentCount);
+  const isFormComplete =
+    photoEntries.length > 0 &&
+    price !== "" &&
+    Number.isFinite(priceNum) &&
+    priceNum > 0 &&
+    moveInDateIso !== null &&
+    nearestStation.trim().length > 0 &&
+    residentCount !== "" &&
+    Number.isInteger(residentCountNum) &&
+    residentCountNum > 0;
 
   const validateMoveInDate = () => {
     if (!moveInDateText) {
@@ -52,10 +95,46 @@ export default function ListingCreatePage() {
     setMoveInDateError(null);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleFilesSelected = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []).filter((file) => file.type.startsWith("image/"));
+    const newEntries = files.map((file) => ({ file, url: URL.createObjectURL(file) }));
+    setPhotoEntries((prev) => [...prev, ...newEntries]);
+    e.target.value = "";
+  };
+
+  const handleRemovePhoto = (index: number) => {
+    setPhotoEntries((prev) => {
+      const removed = prev[index];
+      if (removed) URL.revokeObjectURL(removed.url);
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!validateMoveInDate()) return;
-    // TODO: wire onSubmit -> POST /api/listings (multipart, requires auth + profile completed)
+    if (!validateMoveInDate() || !isFormComplete || !moveInDateIso) return;
+
+    setIsSubmitting(true);
+    setError(null);
+    try {
+      const formData = new FormData();
+      photoEntries.forEach((entry) => formData.append("photos", entry.file));
+      formData.append("borough", BOROUGH_ENUM_VALUES[location.borough] ?? location.borough);
+      formData.append("neighborhood", location.neighborhood);
+      formData.append("price", price);
+      formData.append("moveInDate", moveInDateIso);
+      formData.append("nearestStation", nearestStation);
+      formData.append("residentCount", residentCount);
+
+      await createListing(formData);
+      photoEntriesRef.current.forEach((entry) => URL.revokeObjectURL(entry.url));
+      navigate("/search");
+    } catch (err) {
+      const message = isAxiosError<{ error?: string }>(err) ? err.response?.data?.error : undefined;
+      setError(message ?? "Could not create your listing. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -72,10 +151,7 @@ export default function ListingCreatePage() {
             <div className="w-px h-5 bg-outline-variant" />
             <NyuLogo />
           </div>
-          <div className="cursor-pointer active:opacity-80">
-            {/* TODO: replace with current user's avatar image */}
-            <div className="w-8 h-8 rounded-full bg-secondary-container overflow-hidden" />
-          </div>
+          <ProfileMenuButton />
         </div>
       </header>
 
@@ -88,35 +164,57 @@ export default function ListingCreatePage() {
             <label className="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">Photos (at least 1 required)</label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-stack-sm">
               {/* Upload Box */}
-              {/* TODO: wire to multer photo upload (min. 1 photo required, per listing/CLAUDE.md) */}
-              <div className="border-2 border-dashed border-outline rounded-lg flex flex-col items-center justify-center p-stack-md h-32 cursor-pointer hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+              <label
+                className="border-2 border-dashed border-outline rounded-lg flex flex-col items-center justify-center p-stack-md h-32 cursor-pointer hover:bg-surface-container-low transition-colors bg-surface-container-lowest"
+                htmlFor="photo-upload"
+              >
                 <span className="material-symbols-outlined text-outline text-3xl mb-2">photo_camera</span>
                 <span className="font-label-sm text-label-sm text-outline text-center">Tap to upload photos</span>
-              </div>
-              {/* Uploaded Thumbnail Placeholder */}
-              <div className="rounded-lg overflow-hidden h-32 relative group bg-surface-container-high">
-                {/* TODO: replace with listing.photos[n] once photos are uploaded */}
-                <div className="absolute inset-0 bg-on-background/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                  <span className="material-symbols-outlined text-on-primary">delete</span>
+                <input
+                  accept="image/*"
+                  className="sr-only"
+                  id="photo-upload"
+                  multiple
+                  onChange={handleFilesSelected}
+                  type="file"
+                />
+              </label>
+
+              {/* Thumbnails of selected photos */}
+              {photoEntries.map((entry, index) => (
+                <div className="rounded-lg overflow-hidden h-32 relative group bg-surface-container-high" key={entry.url}>
+                  <img alt={`Selected photo ${index + 1}`} className="w-full h-full object-cover" src={entry.url} />
+                  <button
+                    aria-label="Remove photo"
+                    className="absolute inset-0 bg-on-background/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                    onClick={() => handleRemovePhoto(index)}
+                    type="button"
+                  >
+                    <span className="material-symbols-outlined text-on-primary">delete</span>
+                  </button>
                 </div>
-              </div>
+              ))}
             </div>
           </section>
 
           {/* Location Section */}
-          {/* TODO: bind onChange -> Listing.borough / Listing.neighborhood */}
-          <BoroughNeighborhoodDropdown variant="labeled" />
+          <BoroughNeighborhoodDropdown onChange={setLocation} variant="labeled" />
 
           {/* Price Section */}
           <section>
-            <label className="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">Monthly Rent (USD)</label>
+            <label className="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface" htmlFor="price">
+              Monthly Rent (USD)
+            </label>
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-4 font-body-lg text-body-lg text-on-surface-variant">$</span>
-              {/* TODO: bind to Listing.price */}
               <input
                 className="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT pl-8 pr-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                id="price"
+                min={1}
+                onChange={(e) => setPrice(e.target.value)}
                 placeholder="0"
                 type="number"
+                value={price}
               />
             </div>
           </section>
@@ -151,32 +249,39 @@ export default function ListingCreatePage() {
 
           {/* Nearest Subway Station Section */}
           <section>
-            <label className="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">Nearest Subway Station</label>
-            {/* TODO: bind to Listing.nearestStation (free text, no validation per listing/CLAUDE.md) */}
+            <label className="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface" htmlFor="nearestStation">
+              Nearest Subway Station
+            </label>
             <input
               className="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT px-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              id="nearestStation"
+              onChange={(e) => setNearestStation(e.target.value)}
               placeholder="e.g., 14 St–Union Sq (5 min walk)"
               type="text"
+              value={nearestStation}
             />
           </section>
 
           {/* Number of Residents Section */}
           <section>
-            <label className="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface">
+            <label className="block font-headline-sm text-headline-sm mb-stack-sm text-on-surface" htmlFor="residentCount">
               Current Number of Residents (including you)
             </label>
-            {/* TODO: bind to Listing.residentCount */}
             <input
               className="w-full bg-surface-container-lowest border border-outline rounded-DEFAULT px-4 py-3 font-body-lg text-body-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              id="residentCount"
               min={1}
+              onChange={(e) => setResidentCount(e.target.value)}
               type="number"
+              value={residentCount}
             />
           </section>
 
           {/* CTA */}
           <div className="pt-stack-md">
-            <PrimaryButton type="submit">
-              <span>Post Listing</span>
+            {error && <p className="font-label-sm text-label-sm text-error mb-2 text-center">{error}</p>}
+            <PrimaryButton disabled={!isFormComplete || isSubmitting} type="submit">
+              <span>{isSubmitting ? "Posting..." : "Post Listing"}</span>
               <span className="material-symbols-outlined">check_circle</span>
             </PrimaryButton>
           </div>
@@ -184,7 +289,7 @@ export default function ListingCreatePage() {
       </main>
 
       {/* BottomNavBar (Mobile Only) */}
-      <BottomNavBar active="profile" />
+      <BottomNavBar />
     </div>
   );
 }

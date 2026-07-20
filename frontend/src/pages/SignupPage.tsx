@@ -9,6 +9,8 @@ interface SignupLocationState {
   verified?: boolean;
 }
 
+const NYU_NETID_EMAIL_REGEX = /^[a-zA-Z0-9]+@nyu\.edu$/;
+
 export default function SignupPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,9 +22,15 @@ export default function SignupPage() {
   const [isVerified] = useState(Boolean(locationState?.verified));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   const handleVerify = () => {
     if (!email) return;
+    if (!NYU_NETID_EMAIL_REGEX.test(email)) {
+      setEmailError("Enter a valid NetID@nyu.edu address.");
+      return;
+    }
+    setEmailError(null);
     navigate("/sso/step1", { state: { email } });
   };
 
@@ -70,7 +78,10 @@ export default function SignupPage() {
                 className="w-full bg-surface py-3 pl-10 pr-[88px] border border-outline-variant rounded-lg font-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors read-only:bg-surface-container-low"
                 id="email"
                 name="email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError(null);
+                }}
                 placeholder="netid@nyu.edu"
                 readOnly={isVerified}
                 type="email"
@@ -92,6 +103,7 @@ export default function SignupPage() {
                 </button>
               )}
             </div>
+            {emailError && <p className="font-label-sm text-label-sm text-error ml-1">{emailError}</p>}
           </div>
 
           {/* Password Field Group */}

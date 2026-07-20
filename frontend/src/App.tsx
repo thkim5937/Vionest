@@ -6,6 +6,8 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import ProfileSetupPage from "./pages/ProfileSetupPage";
 import ListingCreatePage from "./pages/ListingCreatePage";
+import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
 import SearchPage from "./pages/SearchPage";
 import ListingDetailPage from "./pages/ListingDetailPage";
 import InboxPage from "./pages/InboxPage";
@@ -46,10 +48,26 @@ export default function App() {
           <Route
             element={
               <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+            path="/"
+          />
+          <Route
+            element={
+              <ProtectedRoute>
                 <SearchPage />
               </ProtectedRoute>
             }
             path="/search"
+          />
+          <Route
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+            path="/profile"
           />
           <Route
             element={

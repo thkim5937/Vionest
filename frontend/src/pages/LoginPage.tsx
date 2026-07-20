@@ -20,7 +20,7 @@ export default function LoginPage() {
     setError(null);
     try {
       const loggedInUser = await login(email, password);
-      navigate(loggedInUser.hasProfile ? "/search" : "/profile/setup");
+      navigate(loggedInUser.hasProfile ? "/" : "/profile/setup");
     } catch (err) {
       const message = isAxiosError<{ error?: string }>(err) ? err.response?.data?.error : undefined;
       setError(message ?? "Invalid email or password.");

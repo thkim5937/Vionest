@@ -29,21 +29,26 @@ type BoroughNeighborhoodDropdownProps = {
   // "labeled" matches the full-width stacked pair with a "Location" heading used on ListingCreatePage.
   variant?: "default" | "labeled";
   onChange?: (value: BoroughNeighborhoodValue) => void;
+  // Lets multiple instances (e.g. SearchPage's mobile/desktop filter bars) share one source of truth
+  // instead of each tracking its own internal selection.
+  value?: BoroughNeighborhoodValue;
 };
 
-export default function BoroughNeighborhoodDropdown({ variant = "default", onChange }: BoroughNeighborhoodDropdownProps) {
-  const [borough, setBorough] = useState(BOROUGHS[0]);
-  const [neighborhood, setNeighborhood] = useState(BOROUGH_NEIGHBORHOODS[BOROUGHS[0]][0]);
+export default function BoroughNeighborhoodDropdown({ variant = "default", onChange, value }: BoroughNeighborhoodDropdownProps) {
+  const [internalBorough, setInternalBorough] = useState(BOROUGHS[0]);
+  const [internalNeighborhood, setInternalNeighborhood] = useState(BOROUGH_NEIGHBORHOODS[BOROUGHS[0]][0]);
+  const borough = value?.borough ?? internalBorough;
+  const neighborhood = value?.neighborhood ?? internalNeighborhood;
 
   const handleBoroughChange = (nextBorough: string) => {
     const nextNeighborhood = BOROUGH_NEIGHBORHOODS[nextBorough][0];
-    setBorough(nextBorough);
-    setNeighborhood(nextNeighborhood);
+    setInternalBorough(nextBorough);
+    setInternalNeighborhood(nextNeighborhood);
     onChange?.({ borough: nextBorough, neighborhood: nextNeighborhood });
   };
 
   const handleNeighborhoodChange = (nextNeighborhood: string) => {
-    setNeighborhood(nextNeighborhood);
+    setInternalNeighborhood(nextNeighborhood);
     onChange?.({ borough, neighborhood: nextNeighborhood });
   };
 
