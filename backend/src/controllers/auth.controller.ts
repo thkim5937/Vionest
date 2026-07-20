@@ -17,7 +17,7 @@ function setAuthCookie(res: Response, token: string) {
   res.cookie(AUTH_COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: COOKIE_MAX_AGE_MS,
   });
 }
