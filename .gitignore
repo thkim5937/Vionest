@@ -2,3 +2,5 @@ node_modules/
 .DS_Store
 .env
 backend/prisma/dev.db
+cookie*.txt
+backend/test.jpg
