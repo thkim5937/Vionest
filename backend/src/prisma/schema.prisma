@@ -79,11 +79,13 @@ model Listing {
 }
 
 model Conversation {
-  id         String   @id @default(uuid())
-  listingId  String
-  searcherId String
-  posterId   String
-  createdAt  DateTime @default(now())
+  id                 String    @id @default(uuid())
+  listingId          String
+  searcherId         String
+  posterId           String
+  createdAt          DateTime  @default(now())
+  searcherLastReadAt DateTime?
+  posterLastReadAt   DateTime?
 
   listing         Listing          @relation(fields: [listingId], references: [id])
   searcher        User             @relation("ConversationSearcher", fields: [searcherId], references: [id])

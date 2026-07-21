@@ -7,6 +7,8 @@ import NyuLogo from "../components/shared/NyuLogo";
 import PrimaryButton from "../components/shared/PrimaryButton";
 import ProfileMenuButton from "../components/shared/ProfileMenuButton";
 import RegionMultiSelectFilter, { RegionSelection } from "../components/shared/RegionMultiSelectFilter";
+import UnreadBadge from "../components/shared/UnreadBadge";
+import { useAuth } from "../hooks/useAuth";
 import { searchListings, ListingSearchResult } from "../api/listings";
 
 // The dropdown's "Staten Island" display label doesn't match the Borough enum's
@@ -34,6 +36,7 @@ export default function SearchPage() {
   const navigate = useNavigate();
   const navigationType = useNavigationType();
   const location = useLocation();
+  const { unreadCount } = useAuth();
 
   const [region, setRegion] = useState<RegionSelection>(EMPTY_REGION_SELECTION);
   const [minPrice, setMinPrice] = useState("");
@@ -120,8 +123,9 @@ export default function SearchPage() {
           <Link className="text-primary font-bold font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg" to="/search">
             Search
           </Link>
-          <Link className="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg" to="/inbox">
+          <Link className="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg flex items-center gap-1.5" to="/inbox">
             Inbox
+            <UnreadBadge count={unreadCount} />
           </Link>
         </nav>
         <div className="flex items-center gap-3">
@@ -253,7 +257,7 @@ export default function SearchPage() {
       </main>
 
       {/* BottomNavBar (Mobile Only) */}
-      <BottomNavBar active="search" />
+      <BottomNavBar active="search" unreadCount={unreadCount} />
     </div>
   );
 }

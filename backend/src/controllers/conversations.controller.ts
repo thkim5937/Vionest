@@ -7,6 +7,20 @@ async function isParticipant(conversationId: string, userId: string): Promise<bo
   return conversation !== null && (conversation.searcherId === userId || conversation.posterId === userId);
 }
 
+function isConversationUnread(
+  conversation: { searcherId: string; posterId: string; searcherLastReadAt: Date | null; posterLastReadAt: Date | null },
+  lastMessage: { senderId: string; createdAt: Date } | undefined,
+  userId: string,
+): boolean {
+  if (!lastMessage || lastMessage.senderId === userId) {
+    return false;
+  }
+
+  const lastReadAt = conversation.searcherId === userId ? conversation.searcherLastReadAt : conversation.posterLastReadAt;
+
+  return lastReadAt === null || lastMessage.createdAt > lastReadAt;
+}
+
 export async function createConversation(req: Request, res: Response) {
   const { listingId } = req.body as { listingId?: string };
   const searcherId = req.userId as string;
@@ -47,19 +61,25 @@ export async function listConversations(req: Request, res: Response) {
     orderBy: { createdAt: "desc" },
   });
 
-  const results = conversations.map((conversation) => {
-    const otherParty = conversation.searcherId === userId ? conversation.poster : conversation.searcher;
-    const lastMessage = conversation.messages[0];
+  const results = conversations
+    .map((conversation) => {
+      const otherParty = conversation.searcherId === userId ? conversation.poster : conversation.searcher;
+      const lastMessage = conversation.messages[0];
+      const activityAt = lastMessage?.createdAt ?? conversation.createdAt;
 
-    return {
-      id: conversation.id,
-      listingId: conversation.listingId,
-      otherPartyName: displayNameFromEmail(otherParty.email),
-      lastMessage: lastMessage
-        ? { content: lastMessage.content, createdAt: lastMessage.createdAt, senderId: lastMessage.senderId }
-        : null,
-    };
-  });
+      return {
+        id: conversation.id,
+        listingId: conversation.listingId,
+        otherPartyName: displayNameFromEmail(otherParty.email),
+        lastMessage: lastMessage
+          ? { content: lastMessage.content, createdAt: lastMessage.createdAt, senderId: lastMessage.senderId }
+          : null,
+        isUnread: isConversationUnread(conversation, lastMessage, userId),
+        activityAt,
+      };
+    })
+    .sort((a, b) => b.activityAt.getTime() - a.activityAt.getTime())
+    .map(({ activityAt: _activityAt, ...result }) => result);
 
   return res.status(200).json({ conversations: results });
 }
@@ -121,4 +141,45 @@ export async function createMessage(req: Request, res: Response) {
   });
 
   return res.status(201).json(message);
+}
+
+export async function markConversationRead(req: Request, res: Response) {
+  const { id } = req.params;
+  const userId = req.userId as string;
+
+  const conversation = await prisma.conversation.findUnique({ where: { id } });
+
+  if (!conversation) {
+    return res.status(404).json({ error: "Conversation not found" });
+  }
+
+  if (conversation.searcherId !== userId && conversation.posterId !== userId) {
+    return res.status(403).json({ error: "Not a participant in this conversation" });
+  }
+
+  const isSearcher = conversation.searcherId === userId;
+
+  const updated = await prisma.conversation.update({
+    where: { id },
+    data: isSearcher ? { searcherLastReadAt: new Date() } : { posterLastReadAt: new Date() },
+  });
+
+  return res.status(200).json(updated);
+}
+
+export async function getUnreadCount(req: Request, res: Response) {
+  const userId = req.userId as string;
+
+  const conversations = await prisma.conversation.findMany({
+    where: { OR: [{ searcherId: userId }, { posterId: userId }] },
+    include: {
+      messages: { orderBy: { createdAt: "desc" }, take: 1 },
+    },
+  });
+
+  const count = conversations.filter((conversation) =>
+    isConversationUnread(conversation, conversation.messages[0], userId),
+  ).length;
+
+  return res.status(200).json({ count });
 }

@@ -72,7 +72,28 @@
       "Bash(curl -s -b /tmp/poster_cookie.txt -X POST http://localhost:4000/api/conversations/3843ad90-bfdc-4913-919e-936f386744d3/payment-requests -H \"Content-Type: application/json\" -d '{\"amount\":75}')",
       "Bash(npm test *)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4000/api/auth/me)",
-      "Bash(curl -s http://localhost:4000/api/conversations -b /Users/taehyunkim/Documents/vionest/backend/cookies.txt)"
+      "Bash(curl -s http://localhost:4000/api/conversations -b /Users/taehyunkim/Documents/vionest/backend/cookies.txt)",
+      "Bash(sqlite3 prisma/dev.db \"SELECT email FROM User LIMIT 5;\")",
+      "Bash(sqlite3 prisma/dev.db \".tables\")",
+      "Bash(curl -s -X POST http://localhost:4000/api/auth/signup -H \"Content-Type: application/json\" -d '{\"email\":\"searchpagetest@nyu.edu\",\"password\":\"testpass123\"}')",
+      "Bash(sqlite3 prisma/dev.db \"DELETE FROM Profile WHERE userId IN \\(SELECT id FROM User WHERE email='searchpagetest@nyu.edu'\\); DELETE FROM User WHERE email='searchpagetest@nyu.edu';\")",
+      "Bash(sqlite3 prisma/dev.db \"SELECT email FROM User WHERE email='searchpagetest@nyu.edu';\")",
+      "Bash(curl -s -X POST http://localhost:4000/api/auth/signup -H \"Content-Type: application/json\" -d '{\"email\":\"searchpagetest2@nyu.edu\",\"password\":\"testpass123\"}')",
+      "Bash(sqlite3 prisma/dev.db \"DELETE FROM Profile WHERE userId IN \\(SELECT id FROM User WHERE email='searchpagetest2@nyu.edu'\\); DELETE FROM User WHERE email='searchpagetest2@nyu.edu';\")",
+      "Bash(npx prisma *)",
+      "Bash(rm -f poster.jar searcher.jar)",
+      "Bash(curl -s -c poster.jar -X POST http://localhost:4000/api/auth/signup -H \"Content-Type: application/json\" -d '{\"email\":\"unreadposter1@nyu.edu\",\"password\":\"password123\"}')",
+      "Bash(curl -s -c searcher.jar -X POST http://localhost:4000/api/auth/signup -H \"Content-Type: application/json\" -d '{\"email\":\"unreadsearcher1@nyu.edu\",\"password\":\"password123\"}')",
+      "Bash(printf '\\\\x89PNG\\\\r\\\\n\\\\x1a\\\\n')",
+      "Bash(curl -s -b poster.jar -c poster.jar -X POST http://localhost:4000/api/listings -F 'photos=@fake.png;type=image/png' -F borough=Manhattan -F 'neighborhood=Greenwich Village' -F price=1500 -F moveInDate=2026-08-01 -F 'nearestStation=West 4th St' -F residentCount=2)",
+      "Bash(curl -sv -c /tmp/poster2.jar -X POST http://localhost:4000/api/auth/signup -H \"Content-Type: application/json\" -d '{\"email\":\"unreadposter2@nyu.edu\",\"password\":\"password123\"}')",
+      "Bash(curl -sv -c /tmp/poster.jar -X POST http://localhost:4000/api/auth/login -H \"Content-Type: application/json\" -d '{\"email\":\"unreadposter1@nyu.edu\",\"password\":\"password123\"}')",
+      "Bash(curl -sv -c /tmp/searcher.jar -X POST http://localhost:4000/api/auth/login -H \"Content-Type: application/json\" -d '{\"email\":\"unreadsearcher1@nyu.edu\",\"password\":\"password123\"}')",
+      "Bash(curl -s -b /tmp/poster.jar -X POST http://localhost:4000/api/listings -F 'photos=@/tmp/fake.png;type=image/png' -F borough=Manhattan -F 'neighborhood=Greenwich Village' -F price=1500 -F moveInDate=2026-08-01 -F 'nearestStation=West 4th St' -F residentCount=2)",
+      "Bash(curl -s -b /tmp/poster.jar http://localhost:4000/api/conversations/unread-count)",
+      "Bash(rm -f /tmp/poster.jar /tmp/searcher.jar /tmp/poster2.jar /tmp/fake.png)",
+      "Bash(curl -s http://localhost:4000/api/health)",
+      "Bash(rm -f /tmp/poster.jar /tmp/searcher.jar /tmp/fake.png)"
     ]
   }
 }

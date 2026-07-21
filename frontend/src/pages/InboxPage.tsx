@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import BottomNavBar from "../components/shared/BottomNavBar";
 import NyuLogo from "../components/shared/NyuLogo";
 import ProfileMenuButton from "../components/shared/ProfileMenuButton";
+import UnreadBadge from "../components/shared/UnreadBadge";
 import { useAuth } from "../hooks/useAuth";
 import { getConversations, ConversationSummary } from "../api/conversations";
 
@@ -29,10 +30,12 @@ function formatTimeLabel(isoDate: string): string {
 function ConversationRow({
   conversation,
   currentUserId,
+  isUnread,
   onClick,
 }: {
   conversation: ConversationSummary;
   currentUserId: string | undefined;
+  isUnread: boolean;
   onClick: () => void;
 }) {
   const lastMessage = conversation.lastMessage;
@@ -63,8 +66,10 @@ function ConversationRow({
         {lastMessage ? (
           isOwnLastMessage ? (
             <p className="font-body-md text-body-md truncate text-on-surface-variant">Sent</p>
-          ) : (
+          ) : isUnread ? (
             <p className="font-body-md text-body-md truncate text-on-surface font-bold">{lastMessage.content}</p>
+          ) : (
+            <p className="font-body-md text-body-md truncate text-on-surface-variant">{lastMessage.content}</p>
           )
         ) : (
           <p className="font-body-md text-body-md truncate text-secondary">No messages yet</p>
@@ -76,7 +81,7 @@ function ConversationRow({
 
 export default function InboxPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, unreadCount } = useAuth();
   const [conversations, setConversations] = useState<ConversationSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -120,8 +125,9 @@ export default function InboxPage() {
           <Link className="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg" to="/search">
             Search
           </Link>
-          <Link className="text-primary font-bold font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg" to="/inbox">
+          <Link className="text-primary font-bold font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg flex items-center gap-1.5" to="/inbox">
             Inbox
+            <UnreadBadge count={unreadCount} />
           </Link>
         </nav>
         <div className="flex items-center gap-3">
@@ -165,6 +171,7 @@ export default function InboxPage() {
               <ConversationRow
                 conversation={conversation}
                 currentUserId={user?.userId}
+                isUnread={conversation.isUnread}
                 key={conversation.id}
                 onClick={() => navigate(`/chat/${conversation.id}`)}
               />
@@ -174,8 +181,7 @@ export default function InboxPage() {
       </main>
 
       {/* BottomNavBar (Mobile Only) */}
-      {/* TODO: only pass hasUnreadMessages when there is at least one unread conversation */}
-      <BottomNavBar active="messages" hasUnreadMessages />
+      <BottomNavBar active="messages" unreadCount={unreadCount} />
     </div>
   );
 }

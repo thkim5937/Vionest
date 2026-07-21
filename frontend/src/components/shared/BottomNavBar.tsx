@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
+import UnreadBadge from "./UnreadBadge";
 
 type NavTabKey = "home" | "search" | "messages";
 
 type BottomNavBarProps = {
   active?: NavTabKey;
-  hasUnreadMessages?: boolean;
+  unreadCount?: number;
 };
 
 const TABS: { key: NavTabKey; label: string; icon: string; to: string }[] = [
@@ -14,7 +15,7 @@ const TABS: { key: NavTabKey; label: string; icon: string; to: string }[] = [
 ];
 
 // Bottom navigation bar: Search / Messages / Profile tabs (shared/CLAUDE.md).
-export default function BottomNavBar({ active, hasUnreadMessages = false }: BottomNavBarProps) {
+export default function BottomNavBar({ active, unreadCount = 0 }: BottomNavBarProps) {
   return (
     <nav className="md:hidden fixed bottom-0 w-full z-50 bg-surface border-t border-surface-variant shadow-[0_-4px_12px_rgba(0,0,0,0.02)]">
       <div className="flex justify-around items-center h-16 w-full px-4 pb-safe">
@@ -28,8 +29,8 @@ export default function BottomNavBar({ active, hasUnreadMessages = false }: Bott
               key={tab.key}
               to={tab.to}
             >
-              {tab.key === "messages" && hasUnreadMessages && (
-                <div className="absolute top-1 right-2 w-2 h-2 bg-nyu-violet rounded-full" />
+              {tab.key === "messages" && unreadCount > 0 && (
+                <UnreadBadge className="absolute top-0.5 right-1" count={unreadCount} />
               )}
               <span className={`material-symbols-outlined mb-1 ${isActive ? "[font-variation-settings:'FILL'_1]" : ""}`}>{tab.icon}</span>
               <span className="font-label-sm text-label-sm">{tab.label}</span>

@@ -5,7 +5,14 @@ import NyuVerifiedBadge from "../components/shared/NyuVerifiedBadge";
 import ProfileMenuButton from "../components/shared/ProfileMenuButton";
 import PaymentRequestModal from "../components/payment/PaymentRequestModal";
 import { useAuth } from "../hooks/useAuth";
-import { ConversationDetail, getConversation, getMessages, Message, sendMessage } from "../api/conversations";
+import {
+  ConversationDetail,
+  getConversation,
+  getMessages,
+  markConversationRead,
+  Message,
+  sendMessage,
+} from "../api/conversations";
 import { getListing, ListingDetail } from "../api/listings";
 import { createPaymentRequest, getPaymentRequests, PaymentRequest } from "../api/payments";
 
@@ -53,6 +60,7 @@ export default function ChatPage() {
     getConversation(conversationId)
       .then(async (conversationDetail) => {
         setConversation(conversationDetail);
+        markConversationRead(conversationId).catch(() => {});
         const [messageList, paymentRequestList, listingDetail] = await Promise.all([
           getMessages(conversationId),
           getPaymentRequests(conversationId),

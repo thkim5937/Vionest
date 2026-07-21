@@ -8,10 +8,14 @@ import {
   useState,
 } from "react";
 import { AuthUser, login as loginRequest, logout as logoutRequest, me, signup as signupRequest } from "../api/auth";
+import { getUnreadCount } from "../api/conversations";
+
+const UNREAD_COUNT_POLL_INTERVAL_MS = 5000;
 
 interface AuthContextValue {
   user: AuthUser | null;
   isLoading: boolean;
+  unreadCount: number;
   signup: (email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<AuthUser>;
   logout: () => Promise<void>;
@@ -23,6 +27,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     me()
@@ -30,6 +35,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .catch(() => setUser(null))
       .finally(() => setIsLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setUnreadCount(0);
+      return;
+    }
+
+    getUnreadCount()
+      .then(setUnreadCount)
+      .catch(() => {});
+
+    const intervalId = setInterval(() => {
+      getUnreadCount()
+        .then(setUnreadCount)
+        .catch(() => {});
+    }, UNREAD_COUNT_POLL_INTERVAL_MS);
+
+    return () => clearInterval(intervalId);
+  }, [user]);
 
   const signup = useCallback(async (email: string, password: string) => {
     await signupRequest(email, password);
@@ -56,7 +80,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return currentUser;
   }, []);
 
-  return createElement(AuthContext.Provider, { value: { user, isLoading, signup, login, logout, refreshUser } }, children);
+  return createElement(
+    AuthContext.Provider,
+    { value: { user, isLoading, unreadCount, signup, login, logout, refreshUser } },
+    children,
+  );
 }
 
 export function useAuth(): AuthContextValue {

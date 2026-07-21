@@ -5,6 +5,8 @@ import MatchScoreBadge from "../components/shared/MatchScoreBadge";
 import NyuVerifiedBadge from "../components/shared/NyuVerifiedBadge";
 import PrimaryButton from "../components/shared/PrimaryButton";
 import ProfileMenuButton from "../components/shared/ProfileMenuButton";
+import UnreadBadge from "../components/shared/UnreadBadge";
+import { useAuth } from "../hooks/useAuth";
 import { getListing, ListingDetail } from "../api/listings";
 import { createOrFindConversation } from "../api/conversations";
 
@@ -45,6 +47,7 @@ function formatMoveInLabel(moveInDate: string): string {
 export default function ListingDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { unreadCount } = useAuth();
   const [listing, setListing] = useState<ListingDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -112,8 +115,9 @@ export default function ListingDetailPage() {
           <Link className="text-primary font-body-md font-bold hover:bg-surface-container-high px-3 py-2 rounded-lg transition-colors" to="/search">
             Search
           </Link>
-          <Link className="text-on-surface-variant font-body-md hover:bg-surface-container-high px-3 py-2 rounded-lg transition-colors" to="/inbox">
+          <Link className="text-on-surface-variant font-body-md hover:bg-surface-container-high px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5" to="/inbox">
             Inbox
+            <UnreadBadge count={unreadCount} />
           </Link>
         </nav>
         <div className="flex items-center gap-4">

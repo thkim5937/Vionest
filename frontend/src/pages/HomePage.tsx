@@ -5,6 +5,7 @@ import BottomNavBar from "../components/shared/BottomNavBar";
 import ListingCard from "../components/shared/ListingCard";
 import NyuLogo from "../components/shared/NyuLogo";
 import ProfileMenuButton from "../components/shared/ProfileMenuButton";
+import UnreadBadge from "../components/shared/UnreadBadge";
 import { useAuth } from "../hooks/useAuth";
 import { searchListings, ListingSearchResult } from "../api/listings";
 
@@ -12,7 +13,7 @@ const RECOMMENDED_LISTING_COUNT = 6;
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, unreadCount } = useAuth();
 
   const [listings, setListings] = useState<ListingSearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,8 +48,9 @@ export default function HomePage() {
           <Link className="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg" to="/search">
             Search
           </Link>
-          <Link className="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg" to="/inbox">
+          <Link className="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high transition-colors px-3 py-2 rounded-lg flex items-center gap-1.5" to="/inbox">
             Inbox
+            <UnreadBadge count={unreadCount} />
           </Link>
         </nav>
         <div className="flex items-center gap-3">
@@ -146,7 +148,7 @@ export default function HomePage() {
       </main>
 
       {/* BottomNavBar (Mobile Only) */}
-      <BottomNavBar active="home" />
+      <BottomNavBar active="home" unreadCount={unreadCount} />
     </div>
   );
 }

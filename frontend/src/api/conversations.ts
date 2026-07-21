@@ -18,6 +18,7 @@ export interface ConversationSummary {
   listingId: string;
   otherPartyName: string;
   lastMessage: { content: string; createdAt: string; senderId: string } | null;
+  isUnread: boolean;
 }
 
 export interface Message {
@@ -57,5 +58,15 @@ export async function getMessages(conversationId: string): Promise<Message[]> {
 
 export async function sendMessage(conversationId: string, content: string): Promise<Message> {
   const { data } = await client.post<Message>(`/api/conversations/${conversationId}/messages`, { content });
+  return data;
+}
+
+export async function getUnreadCount(): Promise<number> {
+  const { data } = await client.get<{ count: number }>("/api/conversations/unread-count");
+  return data.count;
+}
+
+export async function markConversationRead(conversationId: string): Promise<Conversation> {
+  const { data } = await client.post<Conversation>(`/api/conversations/${conversationId}/read`);
   return data;
 }

@@ -6,6 +6,7 @@ import BoroughNeighborhoodDropdown, { BOROUGH_NEIGHBORHOODS, BOROUGHS } from "..
 import NyuLogo from "../components/shared/NyuLogo";
 import PrimaryButton from "../components/shared/PrimaryButton";
 import ProfileMenuButton from "../components/shared/ProfileMenuButton";
+import { useAuth } from "../hooks/useAuth";
 import { createListing } from "../api/listings";
 
 // Auto-inserts "." separators as the user types digits: "260901" -> "26.09.01".
@@ -48,6 +49,7 @@ interface PhotoEntry {
 
 export default function ListingCreatePage() {
   const navigate = useNavigate();
+  const { unreadCount } = useAuth();
 
   const [photoEntries, setPhotoEntries] = useState<PhotoEntry[]>([]);
   const [location, setLocation] = useState({ borough: BOROUGHS[0], neighborhood: BOROUGH_NEIGHBORHOODS[BOROUGHS[0]][0] });
@@ -289,7 +291,7 @@ export default function ListingCreatePage() {
       </main>
 
       {/* BottomNavBar (Mobile Only) */}
-      <BottomNavBar />
+      <BottomNavBar unreadCount={unreadCount} />
     </div>
   );
 }
