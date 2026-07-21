@@ -83,7 +83,7 @@ export default function ListingDetailPage() {
     );
   }
 
-  const photoUrl = listing.photos[0] ? `${import.meta.env.VITE_API_BASE_URL}${listing.photos[0]}` : undefined;
+  const photoUrl = listing.photos[0] ? `${import.meta.env.VITE_API_BASE_URL ?? ""}${listing.photos[0]}` : undefined;
   const listingId = listing.id;
 
   async function handleSendMessage() {

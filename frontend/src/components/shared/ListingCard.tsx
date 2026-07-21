@@ -8,7 +8,7 @@ function formatMoveInLabel(moveInDate: string): string {
 }
 
 export default function ListingCard({ listing }: { listing: ListingSearchResult }) {
-  const photoUrl = listing.photos[0] ? `${import.meta.env.VITE_API_BASE_URL}${listing.photos[0]}` : undefined;
+  const photoUrl = listing.photos[0] ? `${import.meta.env.VITE_API_BASE_URL ?? ""}${listing.photos[0]}` : undefined;
   const posterInitial = listing.posterName.charAt(0).toUpperCase();
 
   return (
